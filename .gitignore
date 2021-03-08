@@ -7,4 +7,9 @@
 /public/bundles/
 /var/
 /vendor/
+.composer
 ###< symfony/framework-bundle ###
+
+# Données Docker
+/docker/mariadb/db
+/docker/apache/log/
