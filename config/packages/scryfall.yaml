@@ -1,0 +1,3 @@
+parameters:
+    scryfall-api:
+        host: 'https://api.scryfall.com'
