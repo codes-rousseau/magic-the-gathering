@@ -1,0 +1,89 @@
+# Adopt version 2 syntax:
+#   https://docs.docker.com/compose/compose-file/#/versioning
+version: '3.5'
+
+networks:
+    appNet:
+        name: ${PROJECT_NAME}
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.100.0/24
+
+volumes:
+    appData:
+        name: MAGIC
+        driver_opts:
+            type: none
+            device: $PWD
+            o: bind
+
+services:
+
+    # Serveur WEB
+    httpd:
+        container_name: ${PROJECT_NAME}_Apache
+        restart: always
+        image: httpd:2.4
+        environment:
+            SYS_PATH: $SYS_PATH
+        #depends_on:
+        #    db:
+        #        condition: service_healthy
+        ports:
+            - 5730:80
+        volumes:
+            - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+            - ./apache/vhosts/:/usr/local/apache2/conf/vhosts
+            - appData:$SYS_PATH:ro
+        networks:
+            - appNet
+
+    # PHP-FPM
+    php:
+        container_name: ${PROJECT_NAME}_PHP
+        restart: always
+        build:
+            context: ./php
+            args:
+                TIMEZONE: $TIMEZONE
+                LANGUAGE: $LANGUAGE
+                USER_ID:  $USER_ID
+                GROUP_ID: $GROUP_ID
+                USER_NAME: $USER_NAME
+                GROUP_NAME: $GROUP_NAME
+                SYS_PATH: $SYS_PATH
+        expose:
+            - 9000
+        volumes:
+            - ./php/php.ini:/usr/local/etc/php/php.ini
+            #- ./php/php-fpm/php-fpm.magic.conf:/usr/local/etc/php-fpm.d/php-fpm.magic.conf
+            - appData:$SYS_PATH:cached
+        networks:
+            - appNet
+
+    # Base de Données
+    db:
+        container_name: ${PROJECT_NAME}_DB
+        restart: always
+        image: mariadb:latest
+        ports:
+            - 3306:$BDD_PORT
+        volumes:
+            - ./mariadb/db:/var/lib/mysql
+            - ./mariadb/conf-mysql.cnf:/etc/mysql/mysql.conf.d/conf-mysql.cnf:ro
+        environment:
+            MYSQL_ROOT_PASSWORD: routes
+            MYSQL_DATABASE: $BDD_BASE
+            MYSQL_USER: $BDD_USER
+            MYSQL_PASSWORD: $BDD_PASS
+        networks:
+            appNet:
+                  ipv4_address: 192.168.100.4
+        #healthcheck:
+        #    test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        #    interval: 30s
+        #    timeout: 10s
+        #    retries: 3
+        #    #start_period: 40s
