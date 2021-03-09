@@ -48,6 +48,11 @@ class Card
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $uuid;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +126,18 @@ class Card
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }

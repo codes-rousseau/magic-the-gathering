@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\CollectionRepository;
+use App\Repository\SetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CollectionRepository::class)
+ * @ORM\Table(name="`set`")
+ * @ORM\Entity(repositoryClass=SetRepository::class)
  */
 class Set
 {
@@ -43,6 +44,11 @@ class Set
      * @ORM\OneToMany(targetEntity=Card::class, mappedBy="Set", orphanRemoval=true)
      */
     private $cards;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $uuid;
 
     public function __construct()
     {
@@ -114,7 +120,7 @@ class Set
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
-            $card->setCollection($this);
+            $card->setSet($this);
         }
 
         return $this;
@@ -124,10 +130,22 @@ class Set
     {
         if ($this->cards->removeElement($card)) {
             // set the owning side to null (unless already changed)
-            if ($card->getCollection() === $this) {
-                $card->setCollection(null);
+            if ($card->getSet() === $this) {
+                $card->setSet(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
