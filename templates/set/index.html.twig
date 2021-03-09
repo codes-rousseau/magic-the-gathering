@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les collections{% endblock %}
+
+{% block body %}
+<section class="text-center container" style="padding-top: 5rem !important;">
+    <h1>Liste des collections importées</h1>
+
+    <div class="row">
+    {% for set in sets %}
+        <div class="card mx-2" style="width: 18rem;">
+            <img src="{{ set.iconSvgUrl }}" class="card-img-top" alt="..." height="50px">
+            <div class="card-body">
+                <h5 class="card-title">{{ set.name }}</h5>
+                <p class="card-text">Code : {{ set.code }}</p>
+                <p class="card-text">Date de parution : {{ set.releasedAt | date('d/m/Y') }}</p>
+                <a href="#" class="btn btn-primary">Voir les {{ set.cards | length }} cartes</a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+</section>
+
+{% endblock %}
