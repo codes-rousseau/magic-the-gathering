@@ -85,15 +85,32 @@ class ImportSetCommande extends Command
         }
 
         //-- On a trouvé la collection, on la met en base
-        //@todo : Tester la duplication
+        $mySet = $this->entityManager->getRepository(Set::class)->findOneBy(['uuid' => $find['id']]);
 
-        $mySet = new Set();
-        $mySet->setCode($find['code'])
-            ->setName($find['name'])
-            ->setIconSvgUrl($find['icon_svg_uri'])
-            ->setReleasedAt(new \DateTime($find['released_at']));
+        if($mySet instanceof Set) {
+            //-- Mise à jour
+            $io->comment('Mise à jour de la collection ' . $find['name']);
+            $mySet
+                ->setUuid($find['id'])
+                ->setCode($find['code'])
+                ->setName($find['name'])
+                ->setIconSvgUrl($find['icon_svg_uri'])
+                ->setReleasedAt(new \DateTime($find['released_at']));
+        } else {
+            //-- Création
+            $io->comment('Création de la collection ' . $find['name']);
+            $mySet = new Set();
+            $mySet
+                ->setUuid($find['id'])
+                ->setCode($find['code'])
+                ->setName($find['name'])
+                ->setIconSvgUrl($find['icon_svg_uri'])
+                ->setReleasedAt(new \DateTime($find['released_at']));
 
-        $this->entityManager->persist($mySet);
+            $this->entityManager->persist($mySet);
+        }
+
+
 
         //-- On récupère les cartes de la collection
         $io->title('Récupération des carte de la collection ' . $mySet->getName());
@@ -108,18 +125,38 @@ class ImportSetCommande extends Command
 
         //-- Sauvegarde des cartes trouvées
         foreach ($res['data'] as $card) {
-            $myCard = new Card();
-            $myCard->setName($card['name'])
-                ->setArtist($card['artist'])
-                ->setDescription($card['oracle_text'])
-                ->setImageUrl($card['image_uris']['png'])
-                ->setSet($mySet)
-                ->setType($card['type_line']);
+            $myCard = $this->entityManager->getRepository(Card::class)->findOneBy(['uuid' => $card['id']]);
 
-            dump($myCard);
+            if($myCard instanceof Set) {
+                //-- Mise à jour
+                $io->comment('Mise à jour de la carte ' . $card['name']);
+                $myCard
+                    ->setUuid($card['id'])
+                    ->setName($card['name'])
+                    ->setArtist($card['artist'])
+                    ->setDescription($card['oracle_text'])
+                    ->setImageUrl($card['image_uris']['png'])
+                    ->setSet($mySet)
+                    ->setType($card['type_line']);
+            } else {
+                //-- Création
+                $io->comment('Création de la carte ' . $card['name']);
+                $myCard = new Card();
+                $myCard
+                    ->setUuid($card['id'])
+                    ->setName($card['name'])
+                    ->setArtist($card['artist'])
+                    ->setDescription($card['oracle_text'])
+                    ->setImageUrl($card['image_uris']['png'])
+                    ->setSet($mySet)
+                    ->setType($card['type_line']);
 
-            $this->entityManager->persist($myCard);
+                $this->entityManager->persist($myCard);
+            }
+
         }
+
+        $this->entityManager->flush();
 
         return 0;
 
