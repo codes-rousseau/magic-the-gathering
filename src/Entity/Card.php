@@ -36,11 +36,6 @@ class Card
     private $imageUrl;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
-
-    /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $artist;
@@ -60,9 +55,15 @@ class Card
      */
     private $color;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Type::class, inversedBy="cards")
+     */
+    private $type;
+
     public function __construct()
     {
         $this->color = new ArrayCollection();
+        $this->type = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,18 +103,6 @@ class Card
     public function setImageUrl(string $imageUrl): self
     {
         $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -174,6 +163,30 @@ class Card
     public function removeColor(Color $color): self
     {
         $this->color->removeElement($color);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Type[]
+     */
+    public function getType(): Collection
+    {
+        return $this->type;
+    }
+
+    public function addType(Type $type): self
+    {
+        if (!$this->type->contains($type)) {
+            $this->type[] = $type;
+        }
+
+        return $this;
+    }
+
+    public function removeType(Type $type): self
+    {
+        $this->type->removeElement($type);
 
         return $this;
     }
