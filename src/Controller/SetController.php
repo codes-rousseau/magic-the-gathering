@@ -12,6 +12,8 @@ class SetController extends AbstractController
 {
     /**
      * @Route("/", name="set.list")
+     * @param Request $request
+     * @return Response
      */
     public function index(Request $request): Response
     {

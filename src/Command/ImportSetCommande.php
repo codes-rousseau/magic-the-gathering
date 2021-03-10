@@ -7,14 +7,16 @@ use App\Entity\Set;
 use App\Service\ScryfallApi;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ImportSetCommande extends Command
 {
@@ -29,14 +31,19 @@ class ImportSetCommande extends Command
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var ParameterBagInterface
+     */
+    private ParameterBagInterface $parameterBag;
 
 
-    public function __construct(ScryfallApi $api, EntityManagerInterface $em)
+    public function __construct(ScryfallApi $api, EntityManagerInterface $em, ParameterBagInterface $parameterBag)
     {
         parent::__construct();
 
         $this->api = $api;
         $this->entityManager = $em;
+        $this->parameterBag = $parameterBag;
     }
 
     protected function configure()
@@ -47,6 +54,11 @@ class ImportSetCommande extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $progressBar = new ProgressBar($output);
+
+        $filesystem = new Filesystem();
+        $imagePath = $this->parameterBag->get('kernel.project_dir') . '/public/cards';
+        $filesystem->mkdir($imagePath);
 
         //-- On récupère toutes les collection en appellant l'API
         $io->title('Récupération de la liste des collection');
@@ -121,15 +133,24 @@ class ImportSetCommande extends Command
             return 0;
         }
 
-        $io->success($res['total_cards'] . ' cartes récupérées');
+        $io->success($res['total_cards'] . ' cartes trouvées');
+
+        $progressBar->setMaxSteps($res['total_cards']);
+        $progressBar->start();
+
 
         //-- Sauvegarde des cartes trouvées
         foreach ($res['data'] as $card) {
+
+            //-- Téléchargement de l'image
+            $image = file_get_contents($card['image_uris']['png']);
+            file_put_contents($imagePath . '/' . $card['id'] . '.png', $image);
+
             $myCard = $this->entityManager->getRepository(Card::class)->findOneBy(['uuid' => $card['id']]);
 
-            if($myCard instanceof Set) {
+            if($myCard instanceof Card) {
                 //-- Mise à jour
-                $io->comment('Mise à jour de la carte ' . $card['name']);
+                //$io->comment('Mise à jour de la carte ' . $card['name']);
                 $myCard
                     ->setUuid($card['id'])
                     ->setName($card['name'])
@@ -154,8 +175,10 @@ class ImportSetCommande extends Command
                 $this->entityManager->persist($myCard);
             }
 
+            $progressBar->advance();
         }
 
+        $progressBar->finish();
         $this->entityManager->flush();
 
         return 0;

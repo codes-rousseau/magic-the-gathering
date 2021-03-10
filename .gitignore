@@ -10,6 +10,8 @@
 .composer
 ###< symfony/framework-bundle ###
 
+public/cards
+
 # Données Docker
 /docker/mariadb/db
 /docker/apache/log/
