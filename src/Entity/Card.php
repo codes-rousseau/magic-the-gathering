@@ -56,9 +56,9 @@ class Card
     private $color;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Type::class, inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="cards")
      */
-    private $type;
+    private $Type;
 
     public function __construct()
     {
@@ -167,26 +167,14 @@ class Card
         return $this;
     }
 
-    /**
-     * @return Collection|Type[]
-     */
-    public function getType(): Collection
+    public function getType(): ?Type
     {
-        return $this->type;
+        return $this->Type;
     }
 
-    public function addType(Type $type): self
+    public function setType(?Type $Type): self
     {
-        if (!$this->type->contains($type)) {
-            $this->type[] = $type;
-        }
-
-        return $this;
-    }
-
-    public function removeType(Type $type): self
-    {
-        $this->type->removeElement($type);
+        $this->Type = $Type;
 
         return $this;
     }

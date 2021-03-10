@@ -25,7 +25,7 @@ class Type
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Card::class, mappedBy="type")
+     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="Type")
      */
     private $cards;
 
@@ -63,7 +63,7 @@ class Type
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
-            $card->addType($this);
+            $card->setType($this);
         }
 
         return $this;
@@ -72,7 +72,10 @@ class Type
     public function removeCard(Card $card): self
     {
         if ($this->cards->removeElement($card)) {
-            $card->removeType($this);
+            // set the owning side to null (unless already changed)
+            if ($card->getType() === $this) {
+                $card->setType(null);
+            }
         }
 
         return $this;
