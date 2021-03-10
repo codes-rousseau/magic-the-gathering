@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Card;
 use App\Entity\Color;
 use App\Entity\Set;
+use App\Entity\Type;
 use App\Service\ScryfallApi;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -158,8 +159,8 @@ class ImportSetCommande extends Command
         foreach ($res['data'] as $card) {
 
             //-- Téléchargement de l'image
-            $image = file_get_contents($card['image_uris']['png']);
-            file_put_contents($this->imagePath . '/' . $card['id'] . '.png', $image);
+            // $image = file_get_contents($card['image_uris']['png']);
+            // file_put_contents($this->imagePath . '/' . $card['id'] . '.png', $image);
 
             $card['image_uri'] = '/cards/' . $card['id'] . '.png';
 
@@ -217,8 +218,7 @@ class ImportSetCommande extends Command
             ->setArtist($data['artist'])
             ->setDescription($data['oracle_text'])
             ->setImageUrl($data['image_uri'])
-            ->setSet($set)
-            ->setType($data['type_line']);
+            ->setSet($set);
 
         //-- Gestion des couleurs
         foreach ($data['colors'] as $colorCode) {
@@ -227,6 +227,19 @@ class ImportSetCommande extends Command
                 $card->addColor($color);
             }
         }
+
+        //-- Gestion des types
+        $type = $this->entityManager->getRepository(Type::class)->findOneBy(['name' => $data['type_line']]);
+        if(!$type instanceof Type) {
+            //-- Nouveau type
+            $type = new Type();
+            $type->setName($data['type_line']);
+
+            $this->entityManager->persist($type);
+            $this->entityManager->flush();
+        }
+
+        $card->setType($type);
 
         return $card;
     }
