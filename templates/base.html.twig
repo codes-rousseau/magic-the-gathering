@@ -24,11 +24,11 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{ path('set') }}">Les collections</a>
+                            <a class="nav-link" aria-current="page" href="{{ path('set.list') }}">Les collections</a>
                         </li>
                     </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Collection" aria-label="Chercher">
+                    <form class="d-flex" name="search" method="get" action="">
+                        <input class="form-control me-2" name="q" type="search" value="{{ search | default('') }}" placeholder="Collection" aria-label="Chercher">
                         <button class="btn btn-outline-success col-6" type="submit">Rechercher une collection</button>
                     </form>
                 </div>

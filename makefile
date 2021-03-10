@@ -72,14 +72,6 @@ vendor/autoload.php: composer.lock ## Installe les dépendances PHP
 	$(dr) --no-deps php composer install
 	touch vendor/autoload.php
 
-node_modules/time: package-lock.json ## Installe les dépendances JS
-	$(dr) --no-deps nodejs npm install
-	$(dr) --no-deps nodejs npm audit fix
-	touch node_modules/time
-
-public/assets: node_modules/time
-	$(dr) --no-deps nodejs npm run build
-
 ##---------- Commandes de dev -----------
 .PHONY: composer
 composer: ## Lance la commande "composer"
@@ -88,10 +80,6 @@ composer: ## Lance la commande "composer"
 .PHONY: console
 console: ## Lance la commande "bin/console" de Symfony
 	$(dr) php bin/console $(SYMFONY_ARGS)
-
-.PHONY: npm
-npm: ## Lance la commande "npm"
-	$(dr) nodejs npm $(NPM_ARGS)
 
 ##-------------- Le Cache ---------------
 .PHONY: clearCacheDev
@@ -106,10 +94,6 @@ clearCacheProd: ## Purge le cache pour l'environnement de PROD
 
 .PHONY: clearCacheAll
 clearCacheAll: clearCacheDev clearCacheProd## Purge le cache pour l'environnement de DEV et de PROD
-
-##---------- Mise en production ---------
-.PHONY: genProd
-genProd: clearCacheProd genAssetsProd ## Prépare le projet pour la prod
 
 ##---------------------------------------
 

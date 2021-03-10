@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les collections{% endblock %}
+
+{% block body %}
+<section class="text-center container" style="padding-top: 5rem !important;">
+    <h1>Liste des collections de cartes pour la collection {{ set.name }}</h1>
+    <a href="{{ path('set.list') }}" class="btn btn-primary">Retour</a>
+    <div class="row mt-3">
+    {% for card in set.cards %}
+        <div class="card m-2" style="width: 18rem;">
+            {#<img src="{{ set.iconSvgUrl }}" class="card-img-top" alt="..." height="50px">#}
+            <div class="card-body">
+                <h5 class="card-title">{{ card.name }}</h5>
+                <p class="card-text">Type : {{ card.type }}</p>
+                <p class="card-text">{{ card.description }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+</section>
+
+{% endblock %}
