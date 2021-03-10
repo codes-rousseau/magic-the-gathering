@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CardRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,6 +54,16 @@ class Card
      * @ORM\Column(type="string", length=100)
      */
     private $uuid;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="cards")
+     */
+    private $color;
+
+    public function __construct()
+    {
+        $this->color = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +150,30 @@ class Card
     public function setUuid(string $uuid): self
     {
         $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Color[]
+     */
+    public function getColor(): Collection
+    {
+        return $this->color;
+    }
+
+    public function addColor(Color $color): self
+    {
+        if (!$this->color->contains($color)) {
+            $this->color[] = $color;
+        }
+
+        return $this;
+    }
+
+    public function removeColor(Color $color): self
+    {
+        $this->color->removeElement($color);
 
         return $this;
     }
