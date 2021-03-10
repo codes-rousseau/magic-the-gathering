@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Card;
+use App\Entity\Color;
 use App\Entity\Set;
 use App\Service\ScryfallApi;
 use Doctrine\ORM\EntityManagerInterface;
@@ -218,6 +219,14 @@ class ImportSetCommande extends Command
             ->setImageUrl($data['image_uri'])
             ->setSet($set)
             ->setType($data['type_line']);
+
+        //-- Gestion des couleurs
+        foreach ($data['colors'] as $colorCode) {
+            $color = $this->entityManager->getRepository(Color::class)->findOneBy(['code' => $colorCode]);
+            if($color instanceof Color) {
+                $card->addColor($color);
+            }
+        }
 
         return $card;
     }
