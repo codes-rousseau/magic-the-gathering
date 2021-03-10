@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Card;
+use App\Entity\Color;
 use App\Entity\Set;
+use App\Entity\Type;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,12 +32,30 @@ class SetController extends AbstractController
 
     /**
      * @Route("/set/{idSet}", name="set.detail")
+     * @param Request $request
      * @param int $idSet
      * @return Response
      */
-    public function set(int $idSet): Response
+    public function set(Request $request, int $idSet): Response
     {
+        $filter = [
+            'name'   => $request->query->get('name'),
+            'colors' => $request->query->get('colors'),
+            'type'   => $request->query->get('type')
+        ];
+
         $set = $this->getDoctrine()->getRepository( Set::class )->find($idSet);
-        return $this->render('set/detail.html.twig', [ 'set' => $set ] );
+        $colors = $this->getDoctrine()->getRepository(Color::class)->findAll();
+        $types = $this->getDoctrine()->getRepository(Type::class)->findAllInSet($idSet);
+
+        $filteredCards = $this->getDoctrine()->getRepository( Card::class )->findWithFilter($filter);
+
+        return $this->render('set/detail.html.twig', [
+            'filter' => $filter,
+            'set' => $set,
+            'colors' => $colors,
+            'types' => $types,
+            'filteredCards' => $filteredCards
+        ] );
     }
 }

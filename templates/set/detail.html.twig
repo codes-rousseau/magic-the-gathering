@@ -6,13 +6,52 @@
 <section class="text-center container" style="padding-top: 5rem !important;">
     <h1>Liste des cartes pour la collection {{ set.name }}</h1>
     <a href="{{ path('set.list') }}" class="btn btn-primary">Retour</a>
+
+    <form class="m-3" name="filtre" method="get" action="{{ path('set.detail', {idSet: set.id}) }}">
+        <div class="row g-3">
+            <div class="col-sm-3">
+                <input class="form-control" name="name" type="text" value="{{ filter.name }}" placeholder="Nom">
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" name="colors[]" id="colors" multiple="multiple">
+                    {% for color in colors %}
+                        <option value="{{ color.id }}" {% if(color.id in(filter.colors)) %} selected {% endif %}>{{ color.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" name="type" id="type">
+                    <option selected></option>
+                    {% for type in types %}
+                        <option value="{{ type.id }}" {% if(type.id == filter.type) %} selected {% endif %}>{{ type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm">
+                <button class="btn btn-success" type="submit">Filtrer</button>
+            </div>
+        </div>
+
+
+
+
+    </form>
+
     <div class="row mt-3">
-    {% for card in set.cards %}
+    {% for card in filteredCards %}
         <div class="card m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">{{ card.name }}</h5>
-                <img src="/cards/{{ card.uuid }}.png" class="card-img-top" alt="{{ card.name }}">
-                <p class="card-text">Type : {{ card.type }}</p>
+                <img src="{{ card.imageUrl }}" class="card-img-top" alt="{{ card.name }}">
+                <p class="card-text">Type : {{ card.type.name }}</p>
+
+                {% set colors = [] %}
+
+                {% for color in card.color %}
+                    {% set colors = colors|merge([color.name]) %}
+                {% endfor %}
+
+                <p class="card-text">Couleur : {{ colors|join(', ') }}</p>
                 <p class="card-text">{{ card.description }}</p>
             </div>
         </div>
@@ -20,5 +59,18 @@
     </div>
 
 </section>
+
+    <script>
+        $( document ).ready(function() {
+            $('#colors').select2({
+                placeholder: 'Sélectionnez une couleur'
+            });
+
+            $('#type').select2({
+                                     placeholder: 'Sélectionnez un type',
+                                   allowClear: true
+                                 });
+        });
+    </script>
 
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Card;
+use App\Entity\Color;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,32 +20,40 @@ class CardRepository extends ServiceEntityRepository
         parent::__construct($registry, Card::class);
     }
 
-    // /**
-    //  * @return Card[] Returns an array of Card objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Récupère les cartes selon les données du filtre
+     *
+     * @param $filter
+     * @return Card[] Returns an array of Type objects
+     */
+    public function findWithFilter($filter): array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        $query = $this->createQueryBuilder('c')
+                    ->join(Color::class, 'color');
+
+        if($filter['name']) {
+            $query
+                ->andWhere($query->expr()->like('c.name', ':name'))
+                ->setParameter('name', '%' . $filter['name'] . '%');
+        }
+
+        if($filter['type']) {
+            $query
+                ->andWhere('c.Type = :type')
+                ->setParameter('type', $filter['type']);
+        }
+
+        if($filter['colors']) {
+            foreach ($filter['colors'] as $key => $color) {
+                $query
+                    ->andWhere(':color' . $key . ' MEMBER OF c.color')
+                    ->setParameter('color' . $key, $color);
+            }
+        }
+
+        return $query
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Card
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
