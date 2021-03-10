@@ -35,6 +35,11 @@ class ImportSetCommande extends Command
      * @var ParameterBagInterface
      */
     private ParameterBagInterface $parameterBag;
+    /**
+     * @var ProgressBar
+     */
+    private ProgressBar $progressBar;
+    private string $imagePath;
 
 
     public function __construct(ScryfallApi $api, EntityManagerInterface $em, ParameterBagInterface $parameterBag)
@@ -54,11 +59,11 @@ class ImportSetCommande extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $progressBar = new ProgressBar($output);
+        $this->progressBar = new ProgressBar($output);
 
         $filesystem = new Filesystem();
-        $imagePath = $this->parameterBag->get('kernel.project_dir') . '/public/cards';
-        $filesystem->mkdir($imagePath);
+        $this->imagePath = $this->parameterBag->get('kernel.project_dir') . '/public/cards';
+        $filesystem->mkdir($this->imagePath);
 
         //-- On récupère toutes les collection en appellant l'API
         $io->title('Récupération de la liste des collection');
@@ -135,50 +140,12 @@ class ImportSetCommande extends Command
 
         $io->success($res['total_cards'] . ' cartes trouvées');
 
-        $progressBar->setMaxSteps($res['total_cards']);
-        $progressBar->start();
+        $this->progressBar->setMaxSteps($res['total_cards']);
+        $this->progressBar->start();
 
+        $this->_importCard($find['search_uri'], $mySet);
 
-        //-- Sauvegarde des cartes trouvées
-        foreach ($res['data'] as $card) {
-
-            //-- Téléchargement de l'image
-            $image = file_get_contents($card['image_uris']['png']);
-            file_put_contents($imagePath . '/' . $card['id'] . '.png', $image);
-
-            $myCard = $this->entityManager->getRepository(Card::class)->findOneBy(['uuid' => $card['id']]);
-
-            if($myCard instanceof Card) {
-                //-- Mise à jour
-                //$io->comment('Mise à jour de la carte ' . $card['name']);
-                $myCard
-                    ->setUuid($card['id'])
-                    ->setName($card['name'])
-                    ->setArtist($card['artist'])
-                    ->setDescription($card['oracle_text'])
-                    ->setImageUrl($card['image_uris']['png'])
-                    ->setSet($mySet)
-                    ->setType($card['type_line']);
-            } else {
-                //-- Création
-                $io->comment('Création de la carte ' . $card['name']);
-                $myCard = new Card();
-                $myCard
-                    ->setUuid($card['id'])
-                    ->setName($card['name'])
-                    ->setArtist($card['artist'])
-                    ->setDescription($card['oracle_text'])
-                    ->setImageUrl($card['image_uris']['png'])
-                    ->setSet($mySet)
-                    ->setType($card['type_line']);
-
-                $this->entityManager->persist($myCard);
-            }
-
-            $progressBar->advance();
-        }
-
-        $progressBar->finish();
+        $this->progressBar->finish();
         $this->entityManager->flush();
 
         return 0;
@@ -194,5 +161,52 @@ class ImportSetCommande extends Command
         }
 
         return $results;
+    }
+
+    private function _importCard(string $route, Set $set) {
+        $res = $this->api->searchCards($route);
+
+        //-- Sauvegarde des cartes trouvées
+        foreach ($res['data'] as $card) {
+
+            //-- Téléchargement de l'image
+            $image = file_get_contents($card['image_uris']['png']);
+            file_put_contents($this->imagePath . '/' . $card['id'] . '.png', $image);
+
+            $myCard = $this->entityManager->getRepository(Card::class)->findOneBy(['uuid' => $card['id']]);
+
+            if($myCard instanceof Card) {
+                //-- Mise à jour
+                $myCard
+                    ->setUuid($card['id'])
+                    ->setName($card['name'])
+                    ->setArtist($card['artist'])
+                    ->setDescription($card['oracle_text'])
+                    ->setImageUrl($card['image_uris']['png'])
+                    ->setSet($set)
+                    ->setType($card['type_line']);
+            } else {
+                //-- Création
+                $myCard = new Card();
+                $myCard
+                    ->setUuid($card['id'])
+                    ->setName($card['name'])
+                    ->setArtist($card['artist'])
+                    ->setDescription($card['oracle_text'])
+                    ->setImageUrl($card['image_uris']['png'])
+                    ->setSet($set)
+                    ->setType($card['type_line']);
+
+                $this->entityManager->persist($myCard);
+            }
+
+            $this->progressBar->advance();
+
+        }
+
+        dump($res['has_more']);
+        if($res['has_more']) {
+            $this->_importCard($res['next_page'], $set);
+        }
     }
 }
