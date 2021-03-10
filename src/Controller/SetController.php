@@ -48,7 +48,7 @@ class SetController extends AbstractController
         $colors = $this->getDoctrine()->getRepository(Color::class)->findAll();
         $types = $this->getDoctrine()->getRepository(Type::class)->findAllInSet($idSet);
 
-        $filteredCards = $this->getDoctrine()->getRepository( Card::class )->findWithFilter($filter);
+        $filteredCards = $this->getDoctrine()->getRepository( Card::class )->findWithFilter($filter, $idSet);
 
         return $this->render('set/detail.html.twig', [
             'filter' => $filter,

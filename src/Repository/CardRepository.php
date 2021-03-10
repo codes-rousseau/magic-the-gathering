@@ -26,10 +26,12 @@ class CardRepository extends ServiceEntityRepository
      * @param $filter
      * @return Card[] Returns an array of Type objects
      */
-    public function findWithFilter($filter): array
+    public function findWithFilter($filter, $idSet): array
     {
         $query = $this->createQueryBuilder('c')
-                    ->join(Color::class, 'color');
+                    ->join(Color::class, 'color')
+        ->andWhere('c.Set = :setId')
+        ->setParameter('setId', $idSet);
 
         if($filter['name']) {
             $query
