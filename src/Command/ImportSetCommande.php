@@ -91,8 +91,7 @@ class ImportSetCommande extends Command
         if(count($results) > 1) {
             $question = new ChoiceQuestion(
                 'Plusieurs collections existent pour ce nom, veuillez préciser',
-                array_map(fn($set) => $set['name'], $results),
-                0
+                array_map(fn($set) => $set['name'], $results)
             );
             $name = $io->askQuestion($question);
 
@@ -107,27 +106,14 @@ class ImportSetCommande extends Command
         if($mySet instanceof Set) {
             //-- Mise à jour
             $io->comment('Mise à jour de la collection ' . $find['name']);
-            $mySet
-                ->setUuid($find['id'])
-                ->setCode($find['code'])
-                ->setName($find['name'])
-                ->setIconSvgUrl($find['icon_svg_uri'])
-                ->setReleasedAt(new \DateTime($find['released_at']));
         } else {
             //-- Création
             $io->comment('Création de la collection ' . $find['name']);
             $mySet = new Set();
-            $mySet
-                ->setUuid($find['id'])
-                ->setCode($find['code'])
-                ->setName($find['name'])
-                ->setIconSvgUrl($find['icon_svg_uri'])
-                ->setReleasedAt(new \DateTime($find['released_at']));
-
-            $this->entityManager->persist($mySet);
         }
 
-
+        $mySet = $this->_hydrateSet($mySet, $find);
+        $this->entityManager->persist($mySet);
 
         //-- On récupère les cartes de la collection
         $io->title('Récupération des carte de la collection ' . $mySet->getName());
@@ -152,7 +138,8 @@ class ImportSetCommande extends Command
 
     }
 
-    private function _searchSetByName(Array $sets, string $name) {
+    private function _searchSetByName(Array $sets, string $name): array
+    {
         $results = [];
         foreach ($sets as $set) {
             if (stripos($set['name'], $name) !== FALSE) {
@@ -173,40 +160,65 @@ class ImportSetCommande extends Command
             $image = file_get_contents($card['image_uris']['png']);
             file_put_contents($this->imagePath . '/' . $card['id'] . '.png', $image);
 
+            $card['image_uri'] = '/cards/' . $card['id'] . '.png';
+
             $myCard = $this->entityManager->getRepository(Card::class)->findOneBy(['uuid' => $card['id']]);
 
-            if($myCard instanceof Card) {
-                //-- Mise à jour
-                $myCard
-                    ->setUuid($card['id'])
-                    ->setName($card['name'])
-                    ->setArtist($card['artist'])
-                    ->setDescription($card['oracle_text'])
-                    ->setImageUrl($card['image_uris']['png'])
-                    ->setSet($set)
-                    ->setType($card['type_line']);
-            } else {
+            if(!$myCard instanceof Card) {
                 //-- Création
                 $myCard = new Card();
-                $myCard
-                    ->setUuid($card['id'])
-                    ->setName($card['name'])
-                    ->setArtist($card['artist'])
-                    ->setDescription($card['oracle_text'])
-                    ->setImageUrl($card['image_uris']['png'])
-                    ->setSet($set)
-                    ->setType($card['type_line']);
-
-                $this->entityManager->persist($myCard);
             }
+
+            $myCard = $this->_hydrateCard($myCard, $set, $card);
+            $this->entityManager->persist($myCard);
 
             $this->progressBar->advance();
 
         }
 
-        dump($res['has_more']);
         if($res['has_more']) {
             $this->_importCard($res['next_page'], $set);
         }
+    }
+
+    /**
+     * Hydrate un objet Set
+     *
+     * @param Set $set
+     * @param array $data
+     * @return Set
+     */
+    private function _hydrateSet(Set $set, Array $data): Set
+    {
+        $set
+            ->setUuid($data['id'])
+            ->setCode($data['code'])
+            ->setName($data['name'])
+            ->setIconSvgUrl($data['icon_svg_uri'])
+            ->setReleasedAt(new \DateTime($data['released_at']));
+
+        return $set;
+    }
+
+    /**
+     * Hydrate un objet Card
+     *
+     * @param Card $card
+     * @param Set $set
+     * @param array $data
+     * @return Card
+     */
+    private function _hydrateCard(Card $card, Set $set, Array $data): Card
+    {
+        $card
+            ->setUuid($data['id'])
+            ->setName($data['name'])
+            ->setArtist($data['artist'])
+            ->setDescription($data['oracle_text'])
+            ->setImageUrl($data['image_uri'])
+            ->setSet($set)
+            ->setType($data['type_line']);
+
+        return $card;
     }
 }
