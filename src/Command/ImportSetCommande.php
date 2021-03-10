@@ -159,8 +159,8 @@ class ImportSetCommande extends Command
         foreach ($res['data'] as $card) {
 
             //-- Téléchargement de l'image
-            // $image = file_get_contents($card['image_uris']['png']);
-            // file_put_contents($this->imagePath . '/' . $card['id'] . '.png', $image);
+            $image = file_get_contents($card['image_uris']['png']);
+            file_put_contents($this->imagePath . '/' . $card['id'] . '.png', $image);
 
             $card['image_uri'] = '/cards/' . $card['id'] . '.png';
 
