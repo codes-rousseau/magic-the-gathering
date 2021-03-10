@@ -27,7 +27,7 @@
                             <a class="nav-link" aria-current="page" href="{{ path('set.list') }}">Les collections</a>
                         </li>
                     </ul>
-                    <form class="d-flex" name="search" method="get" action="">
+                    <form class="d-flex" name="search" method="get" action="{{ path('set.list') }}">
                         <input class="form-control me-2" name="q" type="search" value="{{ search | default('') }}" placeholder="Collection" aria-label="Chercher">
                         <button class="btn btn-outline-success col-6" type="submit">Rechercher une collection</button>
                     </form>
