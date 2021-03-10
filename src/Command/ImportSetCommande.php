@@ -97,7 +97,7 @@ class ImportSetCommande extends Command
             );
             $name = $io->askQuestion($question);
 
-            $find = $this->_searchSetByName($results, $name)[0];
+            $find = $this->_searchSetByName($results, $name, true)[0];
         } else {
             $find = $results[0];
         }
@@ -140,12 +140,24 @@ class ImportSetCommande extends Command
 
     }
 
-    private function _searchSetByName(Array $sets, string $name): array
+    /**
+     * @param array $sets
+     * @param string $name
+     * @param bool $exact
+     * @return array
+     */
+    private function _searchSetByName(Array $sets, string $name, bool $exact = false): array
     {
         $results = [];
         foreach ($sets as $set) {
-            if (stripos($set['name'], $name) !== FALSE) {
-                $results[] = $set;
+            if($exact) {
+                if ($set['name'] === $name) {
+                    $results[] = $set;
+                }
+            } else {
+                if (stripos($set['name'], $name) !== FALSE) {
+                    $results[] = $set;
+                }
             }
         }
 
