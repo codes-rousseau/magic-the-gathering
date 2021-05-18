@@ -93,7 +93,7 @@ class Card
         return $this->collection;
     }
 
-    public function setCollection(?Collection $collection): self
+    public function setCollection(?CollectionCard $collection): self
     {
         $this->collection = $collection;
 
