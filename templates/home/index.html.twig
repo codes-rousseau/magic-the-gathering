@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collection - MAGIC THE GATHERING{% endblock %}
+
+{% block body %}
+
+
+    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 fst-italic">MAGIC THE GATHERING</h1>
+            <p class="lead my-3">All Card objects on Scryfall belong to exactly one set.
+                Due to Magic’s long and complicated history, Scryfall includes many un-official sets as a way to group promotional or outlier cards together. </p>
+        </div>
+    </div>
+    <div class="row mb-2 d-flex justify-content-around">
+
+        {% for collection in collections %}
+            <div class="col-md-5 ">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-success">{{ collection.code }}</strong>
+                        <h3 class="mb-0">{{ collection.name }}</h3>
+                        <div class="mb-1 text-muted">Nombre de carte : {{ collection.cardCount }}</div>
+                        <a href="#" class="stretched-link">Voir les cartes</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
