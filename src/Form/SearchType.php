@@ -21,29 +21,28 @@ class SearchType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' =>  false,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Nom de la carte'
                 ]
             ])
             ->add('type', EntityType::class, [
-                'required'=> false,
-                'class'=> Type::class,
+                'required' => false,
+                'class' => Type::class,
                 'placeholder' => 'Recherche par Type',
                 'multiple' => false,
                 'expanded' => false,
             ])
             ->add('color', EntityType::class, [
-                'required'=> false,
-                'class'=> Color::class,
+                'required' => false,
+                'class' => Color::class,
                 'placeholder' => 'Recherche par Couleur',
                 'multiple' => false,
                 'expanded' => false,
             ])
-            ->add('submit', SubmitType::class,[
-                'label'=> 'Rechercher'
-            ])
-        ;
+            ->add('submit', SubmitType::class, [
+                'label' => 'Rechercher'
+            ]);
     }
 
 

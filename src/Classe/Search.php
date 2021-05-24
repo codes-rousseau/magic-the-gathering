@@ -12,15 +12,15 @@ class Search
     /**
      * @var Color
      */
-    public $color ;
+    public $color;
 
     /**
      * @var Type
      */
-    public $type ;
+    public $type;
 
     /**
      * @var string
      */
-    public $name ;
+    public $name;
 }

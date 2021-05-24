@@ -13,24 +13,14 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
             </ul>
-
-                {{ form_start(form,{'attr': {'class': 'form-inline'}}) }}
-                {{ form_widget(form.color) }}
-                {{ form_widget(form.type) }}
-                {{ form_widget(form.name) }}
-                {{ form_widget(form.submit) }}
-                {{ form_end(form) }}
-
-
-
-
-            {# <form class="form-inline mt-2 mt-md-0"> #}
-            {# <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> #}
-            {# <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> #}
-            {# </form> #}
+            {{ form_start(form,{'attr': {'class': 'form-inline'}}) }}
+            {{ form_widget(form.color) }}
+            {{ form_widget(form.type) }}
+            {{ form_widget(form.name) }}
+            {{ form_widget(form.submit) }}
+            {{ form_end(form) }}
         </div>
     </nav>
-
 
     <div class="row mb-2 d-flex justify-content-around mt-5">
         {% for card in cards %}

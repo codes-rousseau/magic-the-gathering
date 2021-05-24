@@ -26,16 +26,13 @@ class CardsController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $cards = $cardRepository->findWithSearch($search) ;
-
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cards = $cardRepository->findWithSearch($search);
         }
-
-
 
         return $this->render('cards/index.html.twig', [
             'cards' => $cards,
-            'form' =>  $form->createView()
+            'form' => $form->createView()
         ]);
     }
 }
