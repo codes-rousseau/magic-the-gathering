@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cards - MAGIC THE GATHERING{% endblock %}
+
+{% block body %}
+    <div class="row mb-2 d-flex justify-content-around">
+
+        {% for card in cards %}
+            <div class="col-md-5 ">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <div class="d-inline">
+                            {% for color in card.color %}
+                                <strong class="d-inline-block mb-2 badge rounded-pil text-color-{{ color.name }}">{{ color.name }} </strong>
+                            {% endfor %}
+                        </div>
+                        <h3 class="mb-0">{{ card.name }}</h3>
+                        <div class="mb-1 text-muted">{{ card.typeName }}</div>
+                    </div>
+                    <div class="d-none d-lg-block">
+                        <img src="{{ card.image }}" alt="">
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}

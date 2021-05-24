@@ -1,0 +1,22 @@
+.text-color-Blue{
+ background-color: dodgerblue;
+}
+
+.text-color-Black{
+ background-color: black;
+ color: white;
+}
+
+.text-color-Red{
+  background-color: red;
+  color: white;
+ }
+
+.text-color-Green{
+ background-color: forestgreen;
+ color: white;
+}
+
+.badge{
+ border: 1px solid black;
+}
