@@ -173,6 +173,9 @@
             "./.env"
         ]
     },
+    "symfony/form": {
+        "version": "v4.4.24"
+    },
     "symfony/framework-bundle": {
         "version": "4.4",
         "recipe": {
@@ -206,6 +209,12 @@
     "symfony/http-kernel": {
         "version": "v4.4.19"
     },
+    "symfony/inflector": {
+        "version": "v4.4.23"
+    },
+    "symfony/intl": {
+        "version": "v4.4.22"
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -218,8 +227,14 @@
     "symfony/mime": {
         "version": "v4.4.19"
     },
+    "symfony/options-resolver": {
+        "version": "v4.4.20"
+    },
     "symfony/orm-pack": {
         "version": "v2.1.0"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.22.1"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.22.0"
@@ -241,6 +256,9 @@
     },
     "symfony/profiler-pack": {
         "version": "v1.0.5"
+    },
+    "symfony/property-access": {
+        "version": "v4.4.20"
     },
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.20"
