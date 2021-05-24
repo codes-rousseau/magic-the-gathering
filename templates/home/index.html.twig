@@ -21,7 +21,7 @@
                         <strong class="d-inline-block mb-2 text-success">{{ collection.code }}</strong>
                         <h3 class="mb-0">{{ collection.name }}</h3>
                         <div class="mb-1 text-muted">Nombre de carte : {{ collection.cardCount }}</div>
-                        <a href="#" class="stretched-link">Voir les cartes</a>
+                        <a href="{{ path("cards", {'collectionId':collection.id})}}" class="stretched-link">Voir les cartes</a>
                     </div>
                 </div>
             </div>

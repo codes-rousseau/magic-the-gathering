@@ -45,13 +45,14 @@ class SetCollectionCommand extends Command
 
 
         if ($answer) {
-            try {
-                $this->cardCollectionService->getCard($answer);
-            }catch (\Exception $e){
-                $output->writeln($this->cardCollectionService->getCollection());
-            }
+            $response = $this->cardCollectionService->getCard($answer);
             $io = new SymfonyStyle($input, $output);
-            $io->success('The cards of the collection have been saved in the database.');
+            if($response === "OK"){
+                $io->success('The cards of the collection have been saved in the database.');
+            }else{
+                $io->error($response);
+            }
+
         }else{
             $output->writeln($this->cardCollectionService->getCollection());
         }

@@ -8,6 +8,7 @@ use App\Entity\Card;
 use App\Entity\CollectionCard;
 use App\Entity\Color;
 use App\Entity\Type;
+use App\Repository\CollectionRepository;
 use App\Repository\ColorRepository;
 use App\Repository\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,12 +22,14 @@ class GetCardCollectionService
     private $client;
     private $typeRepository;
     private $colorRepository;
+    private $collectionRepository;
 
-    public function __construct(EntityManagerInterface $em, TypeRepository $typeRepository, ColorRepository $colorRepository)
+    public function __construct(EntityManagerInterface $em, TypeRepository $typeRepository, ColorRepository $colorRepository, CollectionRepository $collectionRepository)
     {
         $this->em = $em;
         $this->typeRepository = $typeRepository;
         $this->colorRepository = $colorRepository;
+        $this->collectionRepository = $collectionRepository;
 
         if (empty($this->colorRepository->findAll())) {
             $this->SetColor();
@@ -39,26 +42,37 @@ class GetCardCollectionService
     * Insert the collection into the database, fill in at the command.
     */
 
-    public function getCard($collectionName)
+    public function getCard($collectionName): string
     {
         $this->collectionName = $collectionName;
+
+        $isCollectionInBDD = $this->collectionRepository->findBy(['name' => $collectionName]);
+
+        if(!empty($isCollectionInBDD)){
+            return "The collection is already in the database";
+        }
 
 
         $response = $this->client->request('GET', 'https://api.scryfall.com/sets');
         $collections = $response->toArray();
-        foreach ($collections['data'] as $value) {
-            if ($value['name'] === $collectionName) {
-                $collection = new CollectionCard();
-                $collection->setCode($value['code']);
-                $collection->setCardCount($value['card_count']);
-                $collection->setName($value['name']);
-                $collection->setSearchUri($value['search_uri']);
-                $this->em->persist($collection);
 
-                $this->insertCardBDD($value['search_uri'], $collection);
-            }
+        $key = $this->searchForName($collectionName,$collections['data']);
+
+        if($key !== null){
+            $collection = new CollectionCard();
+            $collection->setCode($collections['data'][$key]['code']);
+            $collection->setCardCount($collections['data'][$key]['card_count']);
+            $collection->setName($collections['data'][$key]['name']);
+            $collection->setSearchUri($collections['data'][$key]['search_uri']);
+            $this->em->persist($collection);
+
+            $this->insertCardBDD($collections['data'][$key]['search_uri'], $collection);
+        }else{
+            return "The collection doesnt exist";
         }
+
         $this->em->flush();
+        return "OK";
 
     }
 
@@ -66,14 +80,16 @@ class GetCardCollectionService
     * Insert the cards into the database according to the collection, fill in at the command.
     */
 
-    private function insertCardBDD($searchUri, CollectionCard $collection)
+    private function insertCardBDD($searchUri, CollectionCard $collectionCard)
     {
         $response = $this->client->request('GET', $searchUri);
         $cards = $response->toArray();
         foreach ($cards['data'] as $value) {
             $card = new Card();
             $card->setName($value['name']);
-            $card->setCollection($collection);
+            $card->setCollection($collectionCard);
+
+            $card->setImage($value['image_uris']['small']);
 
             $type = $this->checkType($value['type_line']);
             $card->setTypeLine($type);
@@ -95,13 +111,13 @@ class GetCardCollectionService
 
     private function checkType($typeName)
     {
-
-        if ($this->typeRepository->findBy(["name" => $typeName])) {
-            $type = $this->typeRepository->findBy(["name" => $typeName]);
+        if (!empty($this->typeRepository->findBy(["name" => $typeName]))) {
+            $type = $this->typeRepository->findOneBy(["name" => $typeName]);
         } else {
             $type = new Type();
             $type->setName($typeName);
             $this->em->persist($type);
+            $this->em->flush();
         }
         return $type;
     }
@@ -164,6 +180,15 @@ class GetCardCollectionService
         }
         return $tabCollection;
 
+    }
+
+    public function searchForName($name, $array) {
+        foreach ($array as $key => $val) {
+            if ($val['name'] === $name) {
+                return $key;
+            }
+        }
+        return null;
     }
 
 }

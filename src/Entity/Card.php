@@ -41,6 +41,11 @@ class Card
      */
     private $type_line;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->color = new ArrayCollection();
@@ -110,6 +115,22 @@ class Card
         $this->type_line = $type_line;
 
         return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function typeName(){
+        return self::getTypeLine()->getName();
     }
 
 }
