@@ -31,6 +31,11 @@ class SetCollectionCommand extends Command
         ;
     }
 
+    /*
+     * Command which retrieves the information of a collection as well as all the cards of this collection.
+     * If the name of the collection does not exist or is empty, the command displays all the collection names.
+     */
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
 

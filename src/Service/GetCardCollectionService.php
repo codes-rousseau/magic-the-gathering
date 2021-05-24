@@ -35,6 +35,10 @@ class GetCardCollectionService
         $this->client = HttpClient::create();
     }
 
+    /*
+    * Insert the collection into the database, fill in at the command.
+    */
+
     public function getCard($collectionName)
     {
         $this->collectionName = $collectionName;
@@ -57,6 +61,10 @@ class GetCardCollectionService
         $this->em->flush();
 
     }
+
+    /*
+    * Insert the cards into the database according to the collection, fill in at the command.
+    */
 
     private function insertCardBDD($searchUri, CollectionCard $collection)
     {
@@ -81,6 +89,10 @@ class GetCardCollectionService
         $this->em->flush();
     }
 
+    /*
+    * Insert the type relation in database for filtering.
+    */
+
     private function checkType($typeName)
     {
 
@@ -94,12 +106,19 @@ class GetCardCollectionService
         return $type;
     }
 
+    /*
+    * Insert the color relation in database for filtering.
+    */
+
     private function checkColor($ColorName)
     {
         $color = $this->colorRepository->findOneBy(["code" => $ColorName]);
         return $color;
     }
 
+    /*
+     * Add the colors present in the different collection of cards in the database.
+     */
 
     private function SetColor()
     {
@@ -131,12 +150,17 @@ class GetCardCollectionService
         $this->em->flush();
     }
 
-    public function getCollection(){
+    /*
+    * Get all the collection names to display them in the command help list.
+     */
+
+    public function getCollection()
+    {
         $response = $this->client->request('GET', 'https://api.scryfall.com/sets');
         $collections = $response->toArray();
         $tabCollection = [];
         foreach ($collections['data'] as $value) {
-                array_push($tabCollection, $value['name']);
+            array_push($tabCollection, $value['name']);
         }
         return $tabCollection;
 
