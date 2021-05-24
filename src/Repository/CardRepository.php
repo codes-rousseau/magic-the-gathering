@@ -20,32 +20,33 @@ class CardRepository extends ServiceEntityRepository
         parent::__construct($registry, Card::class);
     }
 
-    public function findWithSearch(Search $search){
+    public function findWithSearch(Search $search)
+    {
         $query = $this
             ->createQueryBuilder('card')
-            ->select('card','type','color')
+            ->select('card', 'type', 'color')
             ->join('card.type_line', 'type')
             ->leftJoin('card.color', 'color');
 
-        if(!empty($search->name)){
+        if (!empty($search->name)) {
             $query = $query
                 ->andWhere('card.name LIKE :name')
                 ->setParameter('name', "%{$search->name}%");
         }
 
-        if(!empty($search->type)){
+        if (!empty($search->type)) {
             $query = $query
                 ->andWhere('type.id IN (:type_line)')
                 ->setParameter('type_line', $search->type);
         }
 
-        if(!empty($search->color)){
+        if (!empty($search->color)) {
             $query = $query
                 ->andWhere('color.id IN (:name)')
                 ->setParameter('name', $search->color);
         }
-        
-            return $query->getQuery()->getResult();
+
+        return $query->getQuery()->getResult();
     }
 
     // /**
