@@ -1,5 +1,27 @@
 # Magic The Gathering
 
+## Réalisation de la commande
+
+* Exécuter la commande suivante pour récupérer une collection ainsi que les cartes associées en fonction du nom de la collection.
+
+``` php bin/console SetCollectionCommand```
+
+Pour voir la liste des collections, taper Entrée sans renseigner le nom d'une collection.
+
+## Les interfaces 
+
+- [page d'accueil avec la liste des collections téléchargées](http://127.0.0.1:8000/)
+
+Pour voir l'ensemble des cartes d'une collection, il vous suffit de suivre le lien 'Voir les cartes' au niveau d'une collection
+
+## Tests
+
+* Pour lancer l'ensemble des tests, il vous suffit d'utiliser la commande :
+
+``` php ./vendor/bin/phpunit```
+
+## Le projet
+
 Ce projet a pour but de récupérer simplement (via une commande Symfony), les collections de cartes disponibles sur l'API https://scryfall.com/docs/api et ensuite afficher sur une page html le résultat.
 
 Il n'y a pas de framework CSS, ni d'utilisation de JS obligatoire.
