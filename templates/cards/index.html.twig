@@ -24,7 +24,7 @@
 
     <div class="row mb-2 d-flex justify-content-around mt-5">
         {% for card in cards %}
-            <div class="col-md-5 ">
+            <div class="col-md-3 ml-1 ">
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
                         <div class="d-inline">
@@ -34,10 +34,12 @@
                         </div>
                         <h3 class="mb-0">{{ card.name }}</h3>
                         <div class="mb-1 text-muted">{{ card.typeName }}</div>
+                        <div class="mb-1 text-muted">{{ card.description }}</div>
                     </div>
-                    <div class="d-none d-lg-block">
+                    <div class="d-none d-lg-block image-card">
                         <img src="{{ card.image }}" alt="">
                     </div>
+                    <div class="mb-1 text-muted">{{ card.artistName }}</div>
                 </div>
             </div>
         {% endfor %}

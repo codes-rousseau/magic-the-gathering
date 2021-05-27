@@ -46,6 +46,16 @@ class Card
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $artistName;
+
     public function __construct()
     {
         $this->color = new ArrayCollection();
@@ -131,6 +141,30 @@ class Card
 
     public function typeName(){
         return self::getTypeLine()->getName();
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getArtistName(): ?string
+    {
+        return $this->artistName;
+    }
+
+    public function setArtistName(string $artistName): self
+    {
+        $this->artistName = $artistName;
+
+        return $this;
     }
 
 }
