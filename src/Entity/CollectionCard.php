@@ -44,6 +44,16 @@ class CollectionCard
      */
     private $cards;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $releaseDate;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $svg;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
@@ -128,6 +138,30 @@ class CollectionCard
                 $card->setCollection(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReleaseDate(): ?\DateTimeInterface
+    {
+        return $this->releaseDate;
+    }
+
+    public function setReleaseDate(?\DateTimeInterface $releaseDate): self
+    {
+        $this->releaseDate = $releaseDate;
+
+        return $this;
+    }
+
+    public function getSvg(): ?string
+    {
+        return $this->svg;
+    }
+
+    public function setSvg(?string $svg): self
+    {
+        $this->svg = $svg;
 
         return $this;
     }

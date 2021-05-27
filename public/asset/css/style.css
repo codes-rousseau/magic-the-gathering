@@ -20,3 +20,12 @@
 .badge {
     border: 1px solid black;
 }
+
+.logo-svg img {
+    width: 85%;
+    height: 100%;
+}
+
+.image-card img {
+    width: 100%;
+}

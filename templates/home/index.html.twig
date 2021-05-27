@@ -21,7 +21,11 @@
                         <strong class="d-inline-block mb-2 text-success">{{ collection.code }}</strong>
                         <h3 class="mb-0">{{ collection.name }}</h3>
                         <div class="mb-1 text-muted">Nombre de carte : {{ collection.cardCount }}</div>
+                        <div class="mb-1 text-muted">Date de sortie : {{ collection.releaseDate |date('d-m-Y') }}</div>
                         <a href="{{ path("cards", {'collectionId':collection.id})}}" class="stretched-link">Voir les cartes</a>
+                    </div>
+                    <div class="d-none d-lg-block logo-svg">
+                        <img src="{{ collection.svg }}" alt="">
                     </div>
                 </div>
             </div>

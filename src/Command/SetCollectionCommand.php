@@ -45,8 +45,10 @@ class SetCollectionCommand extends Command
 
 
         if ($answer) {
-            $response = $this->cardCollectionService->getCard($answer);
+
             $io = new SymfonyStyle($input, $output);
+            $io->title('Recuperation de la collection et des cartes en cours de traitement');
+            $response = $this->cardCollectionService->getCard($answer);
             if($response === "OK"){
                 $io->success('The cards of the collection have been saved in the database.');
             }else{

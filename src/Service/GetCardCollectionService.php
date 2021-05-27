@@ -23,13 +23,15 @@ class GetCardCollectionService
     private $typeRepository;
     private $colorRepository;
     private $collectionRepository;
+    private $uploadImgService;
 
-    public function __construct(EntityManagerInterface $em, TypeRepository $typeRepository, ColorRepository $colorRepository, CollectionRepository $collectionRepository)
+    public function __construct(EntityManagerInterface $em, TypeRepository $typeRepository, ColorRepository $colorRepository, CollectionRepository $collectionRepository, UploadImgService $uploadImgService)
     {
         $this->em = $em;
         $this->typeRepository = $typeRepository;
         $this->colorRepository = $colorRepository;
         $this->collectionRepository = $collectionRepository;
+        $this->uploadImgService = $uploadImgService;
 
         if (empty($this->colorRepository->findAll())) {
             $this->SetColor();
@@ -64,6 +66,11 @@ class GetCardCollectionService
             $collection->setCardCount($collections['data'][$key]['card_count']);
             $collection->setName($collections['data'][$key]['name']);
             $collection->setSearchUri($collections['data'][$key]['search_uri']);
+
+            $stringDate = strtotime($collections['data'][$key]['released_at']);
+            $date = new \DateTime();
+            $collection->setReleaseDate($date->setTimestamp($stringDate));
+            $collection->setSvg($collections['data'][$key]['icon_svg_uri']);
             $this->em->persist($collection);
 
             $this->insertCardBDD($collections['data'][$key]['search_uri'], $collection);
@@ -82,6 +89,7 @@ class GetCardCollectionService
 
     private function insertCardBDD($searchUri, CollectionCard $collectionCard)
     {
+
         $response = $this->client->request('GET', $searchUri);
         $cards = $response->toArray();
         foreach ($cards['data'] as $value) {
@@ -89,7 +97,13 @@ class GetCardCollectionService
             $card->setName($value['name']);
             $card->setCollection($collectionCard);
 
-            $card->setImage($value['image_uris']['small']);
+            $card->setImage($this->uploadImgService->uploadAsset($value['image_uris']['png']));
+
+            $card->setArtistName($value['artist']);
+
+            if(!empty($value['flavor_text'])){
+                $card->setDescription($value['flavor_text']);
+            }
 
             $type = $this->checkType($value['type_line']);
             $card->setTypeLine($type);
