@@ -27,17 +27,13 @@ class UploadImgService
     {
 
         $newFilename = uniqid() . '.png';
-        $img = $this->params->get('assets_directory').$newFilename;
+        $img = $this->params->get('assets_directory') . $newFilename;
         file_put_contents($img, file_get_contents($url));
 
 
-        return $this->params->get('assets_directory_relative').$newFilename;
+        return $this->params->get('assets_directory_relative') . $newFilename;
 
     }
-
-
-
-
 
 
 }

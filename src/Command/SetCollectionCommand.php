@@ -27,8 +27,7 @@ class SetCollectionCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
-        ;
+            ->setDescription(self::$defaultDescription);
     }
 
     /*
@@ -49,13 +48,13 @@ class SetCollectionCommand extends Command
             $io = new SymfonyStyle($input, $output);
             $io->title('Recuperation de la collection et des cartes en cours de traitement');
             $response = $this->cardCollectionService->getCard($answer);
-            if($response === "OK"){
+            if ($response === "OK") {
                 $io->success('The cards of the collection have been saved in the database.');
-            }else{
+            } else {
                 $io->error($response);
             }
 
-        }else{
+        } else {
             $output->writeln($this->cardCollectionService->getCollection());
         }
 

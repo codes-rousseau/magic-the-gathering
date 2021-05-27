@@ -9,7 +9,8 @@
         <div class="col-md-6 px-0">
             <h1 class="display-4 fst-italic">MAGIC THE GATHERING</h1>
             <p class="lead my-3">All Card objects on Scryfall belong to exactly one set.
-                Due to Magic’s long and complicated history, Scryfall includes many un-official sets as a way to group promotional or outlier cards together. </p>
+                Due to Magic’s long and complicated history, Scryfall includes many un-official sets as a way to group
+                promotional or outlier cards together. </p>
         </div>
     </div>
     <div class="row mb-2 d-flex justify-content-around">
@@ -22,7 +23,8 @@
                         <h3 class="mb-0">{{ collection.name }}</h3>
                         <div class="mb-1 text-muted">Nombre de carte : {{ collection.cardCount }}</div>
                         <div class="mb-1 text-muted">Date de sortie : {{ collection.releaseDate |date('d-m-Y') }}</div>
-                        <a href="{{ path("cards", {'collectionId':collection.id})}}" class="stretched-link">Voir les cartes</a>
+                        <a href="{{ path("cards", {'collectionId':collection.id}) }}" class="stretched-link">Voir les
+                            cartes</a>
                     </div>
                     <div class="d-none d-lg-block logo-svg">
                         <img src="{{ collection.svg }}" alt="">

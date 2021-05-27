@@ -139,7 +139,8 @@ class Card
         return $this;
     }
 
-    public function typeName(){
+    public function typeName()
+    {
         return self::getTypeLine()->getName();
     }
 

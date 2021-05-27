@@ -50,7 +50,7 @@ class GetCardCollectionService
 
         $isCollectionInBDD = $this->collectionRepository->findBy(['name' => $collectionName]);
 
-        if(!empty($isCollectionInBDD)){
+        if (!empty($isCollectionInBDD)) {
             return "The collection is already in the database";
         }
 
@@ -58,9 +58,9 @@ class GetCardCollectionService
         $response = $this->client->request('GET', 'https://api.scryfall.com/sets');
         $collections = $response->toArray();
 
-        $key = $this->searchForName($collectionName,$collections['data']);
+        $key = $this->searchForName($collectionName, $collections['data']);
 
-        if($key !== null){
+        if ($key !== null) {
             $collection = new CollectionCard();
             $collection->setCode($collections['data'][$key]['code']);
             $collection->setCardCount($collections['data'][$key]['card_count']);
@@ -74,7 +74,7 @@ class GetCardCollectionService
             $this->em->persist($collection);
 
             $this->insertCardBDD($collections['data'][$key]['search_uri'], $collection);
-        }else{
+        } else {
             return "The collection doesnt exist";
         }
 
@@ -101,7 +101,7 @@ class GetCardCollectionService
 
             $card->setArtistName($value['artist']);
 
-            if(!empty($value['flavor_text'])){
+            if (!empty($value['flavor_text'])) {
                 $card->setDescription($value['flavor_text']);
             }
 
@@ -196,7 +196,8 @@ class GetCardCollectionService
 
     }
 
-    public function searchForName($name, $array) {
+    public function searchForName($name, $array)
+    {
         foreach ($array as $key => $val) {
             if ($val['name'] === $name) {
                 return $key;
