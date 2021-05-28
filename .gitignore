@@ -8,4 +8,5 @@
 /var/
 /vendor/
 .idea/
+data/database.sqlite
 ###< symfony/framework-bundle ###
