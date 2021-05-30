@@ -9,4 +9,6 @@
 /vendor/
 .idea/
 data/database.sqlite
+public/sets
+public/cards
 ###< symfony/framework-bundle ###

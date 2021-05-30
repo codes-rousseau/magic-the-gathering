@@ -1,0 +1,2 @@
+parameters:
+  api_base_url: 'https://api.scryfall.com'
