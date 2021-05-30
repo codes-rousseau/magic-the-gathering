@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cards available{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Cards</h1>
+
+        <h3>Here are the cards from {{ cards[0].set.name }}</h3>
+
+        {% for card in cards %}
+            <div>
+                <img src="../cards/{{ card.image }}.png" alt="No image found" height="300px">
+                <div>
+                    <h4>{{ card.name }}</h4>
+                    <p>Type : {{ card.type }}</p>
+                    {% set colors = translate_colors(card.color) %}
+                    {% if colors is not empty %}
+                        {% if ',' in colors %}
+                            <p>Colors : {{ colors }}</p>
+                        {% else %}
+                            <p>Color : {{ colors }}</p>
+                        {% endif %}
+                    {% endif %}
+                    {% if card.description is defined and card.description is not empty %}
+                        <p>Description : {{ card.description }}</p>
+                    {% endif %}
+                    <p>Artist : {{ card.artist }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

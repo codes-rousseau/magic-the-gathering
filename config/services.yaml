@@ -34,3 +34,7 @@ services:
         arguments:
             $apiBaseUrl: '%api_base_url%'
             $projectDirectory: '%kernel.project_dir%'
+
+    App\Twig\TranslateColorsExtension:
+        arguments:
+            $colorsMapping: '%colors%'

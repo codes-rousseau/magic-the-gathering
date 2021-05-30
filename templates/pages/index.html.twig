@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collections available{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Collections</h1>
+
+    <h3>Click on a collection to see the cards in it</h3>
+
+    {% for set in sets %}
+        <div>
+            <img src="sets/{{ set.icon }}.svg" alt="No image found" height="75px">
+            <div>
+                <h4>{{ set.name }}</h4>
+                <p>Released on the {{ set.releasedAt | date('d/m/Y') }}</p>
+                <p>Code : {{ set.code }}</p>
+                <p>This collection has <a href="{{ path('collection_detail', {'id': set.id}) }}">{{ set.cards | length }} cards</a> in it</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
