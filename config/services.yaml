@@ -38,3 +38,7 @@ services:
     App\Twig\TranslateColorsExtension:
         arguments:
             $colorsMapping: '%colors%'
+
+    App\Controller\Pages\CollectionController:
+        arguments:
+            $colorsMapping: '%colors%'
