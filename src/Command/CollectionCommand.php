@@ -110,7 +110,6 @@ class CollectionCommand extends Command
                         $dbCarte->setDescription($carte['oracle_text']);
                     }
                     else{
-                        $output->writeln('La collection et les cartes associer ont été ajouter à la base de données');
                         $dbCarte->setDescription($carte['card_faces'][0]['oracle_text']);
                     }
 

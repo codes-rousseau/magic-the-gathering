@@ -253,6 +253,29 @@
     "symfony/stopwatch": {
         "version": "v4.4.27"
     },
+    "symfony/translation-contracts": {
+        "version": "v2.4.0"
+    },
+    "symfony/twig-bridge": {
+        "version": "v4.4.27"
+    },
+    "symfony/twig-bundle": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "73baff3f7b3cea12a73812a7cfd2c0924a9e250f"
+        },
+        "files": [
+            "./config/packages/test/twig.yaml",
+            "./config/packages/twig.yaml",
+            "./templates/base.html.twig"
+        ]
+    },
+    "symfony/twig-pack": {
+        "version": "v1.0.1"
+    },
     "symfony/var-dumper": {
         "version": "v4.4.19"
     },
@@ -261,5 +284,11 @@
     },
     "symfony/yaml": {
         "version": "v4.4.19"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.3.3"
+    },
+    "twig/twig": {
+        "version": "v3.3.3"
     }
 }

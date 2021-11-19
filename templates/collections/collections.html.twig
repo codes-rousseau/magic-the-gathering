@@ -1,0 +1,27 @@
+{% block title %}Les collections Magic{% endblock %}
+
+{% block body %}
+    <h1>Liste des collections</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Code</th>
+                <th>Date de sortie</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for collection in collections %}
+                <tr>
+                    <td>{{ collection.nom }}</td>
+                    <td>{{ collection.code }}</td>
+                    <td>{{ collection.dateSortie|date("m/d/Y") }}</td>
+                    <td><img src="{{ collection.svg }}"></td>
+                    <td><a href="{{ path('cartes_collection', {'id': collection.id }) }}"><button>Accéder aux cartes</button></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

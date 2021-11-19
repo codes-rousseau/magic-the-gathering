@@ -1,0 +1,30 @@
+{% block body %}
+
+<h1>Carte de la collection {{ collection.nom }}</h1>
+    <input type="search"/>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Couleur</th>
+                <th>Description</th>
+                <th>Artiste</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for carte in cartes %}
+                <tr>
+                    <td>{{ carte.nom }}</td>
+                    <td>{{ carte.type }}</td>
+                    <td>{{ carte.couleur }}</td>
+                    <td>{{ carte.description }}</td>
+                    <td>{{ carte.artiste }}</td>
+                    <td><img src="{{ carte.image }}" width="100"></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
