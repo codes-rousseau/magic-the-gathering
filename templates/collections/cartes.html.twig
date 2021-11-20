@@ -22,7 +22,7 @@
                     <td>{{ carte.couleur }}</td>
                     <td>{{ carte.description }}</td>
                     <td>{{ carte.artiste }}</td>
-                    <td><img src="{{ carte.image }}" width="100"></td>
+                    <td><img src="{{ asset(carte.image) }}" width="100"></td>
                 </tr>
             {% endfor %}
         </tbody>

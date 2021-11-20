@@ -13,6 +13,7 @@ use App\Api\CollectionApi;
 use App\Api\CarteApi;
 use App\Entity\Collections;
 use App\Entity\Carte;
+use Symfony\Component\Filesystem\Filesystem;
   
 class CollectionCommand extends Command
 {
@@ -96,13 +97,17 @@ class CollectionCommand extends Command
                             ->setCouleur($carte['border_color'])
                             ->setArtiste($carte['artist'])
                             ->setCollection($collection);
+
+                    $png = strtolower('cards/' . str_replace([' ','-',':',',','/','\''],'',$carte['name']) . '.png');
                     
                     //Gestion du cas ou l'api retour l'image d'une maniere différente
                     if(array_key_exists('image_uris',$carte)){
-                        $dbCarte->setImage($carte['image_uris']['png']);
+                        $dbCarte->setImage($png);
+                        file_put_contents('public/' . $png, file_get_contents($carte['image_uris']['png']));
                     }
                     else{
-                        $dbCarte->setImage($carte['card_faces'][0]['image_uris']['png']);
+                        $dbCarte->setImage($png);
+                        file_put_contents('public/' . $png, file_get_contents($carte['card_faces'][0]['image_uris']['png']));
                     }
 
                     //Gestion du cas ou l'api retourne une description d'une autre maniere
