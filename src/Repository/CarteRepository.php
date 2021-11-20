@@ -19,32 +19,25 @@ class CarteRepository extends ServiceEntityRepository
         parent::__construct($registry, Carte::class);
     }
 
-    // /**
-    //  * @return Carte[] Returns an array of Carte objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findArticlesByName(string $texteRecherche, int $optionRecherche, int $idCollection)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('Carte')->andWhere('Carte.collection = :collection');
 
-    /*
-    public function findOneBySomeField($value): ?Carte
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // 0 : recherche par nom, 1: recherche par couleur, 2: recheche par type
+        switch ($optionRecherche) {
+            case 0:
+                $query->andWhere('Carte.nom LIKE :recherche');
+                break;
+            case 1:
+                $query->andWhere('Carte.couleur LIKE :recherche');
+                break;
+            case 2:
+                $query->andWhere('Carte.type LIKE :recherche');
+                break;
+        }
+        $query->setParameter('collection', $idCollection);
+        $query->setParameter('recherche', '%' . $texteRecherche . '%');
+
+        return $query->getQuery()->execute();
     }
-    */
 }
