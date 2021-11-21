@@ -34,7 +34,8 @@ class CollectionCommand extends Command
 
     protected function configure()
     {
-        //Argument de la commande : nom de la collection rechercher
+        //Option de la commande : nom de la collection recherché
+        //Par defaut à -1 si on ne lui donne pas de valeur dans la commande
         $this->addOption(
             'collection_name',
             null,
@@ -42,11 +43,13 @@ class CollectionCommand extends Command
             'Le nom de collections rechercher',
             -1
         )
+        //Option de la commande : identifiant de la collection choisi
+        //Par defalt à -1 si on ne lui donne pas de valeur dans la commande
         ->addOption(
             'collection_choice',
             null,
             InputOption::VALUE_REQUIRED,
-            'Choix de la collection par la liste',
+            'Choix de la collection par identifiant',
             -1
         );
     }
@@ -54,7 +57,7 @@ class CollectionCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $collections = $this->collectionApi->getCollections();
-        //Ici, on affiche toute les collection qui on pour nom l'argument envoyer par la commande
+        //Ici, on affiche toutes les collections qui ont pour nom l'argument envoyé par la commande
         if($input->getOption('collection_choice') == -1){
 
             if($input->getOption('collection_name') == -1){
@@ -62,7 +65,7 @@ class CollectionCommand extends Command
             }
             else{
                 
-                //Recherche des différente occurence du nom
+                //Recherche des différentes occurrences du nom
                 foreach ($collections as $key => $collection){
                     if( strpos($collection["name"],$input->getOption('collection_name'))  !==  false){
                         $output->writeln($key . '- ' . $collection["name"]);
@@ -98,9 +101,10 @@ class CollectionCommand extends Command
                             ->setArtiste($carte['artist'])
                             ->setCollection($collection);
 
+                    //L'image qui va être créée dans public/cards
                     $png = strtolower('cards/' . str_replace([' ','-',':',',','/','\''],'',$carte['name']) . '.png');
                     
-                    //Gestion du cas ou l'api retour l'image d'une maniere différente
+                    //Gestion du cas ou l'api retour l'image d'une manière différente
                     if(array_key_exists('image_uris',$carte)){
                         $dbCarte->setImage($png);
                         file_put_contents('public/' . $png, file_get_contents($carte['image_uris']['png']));
@@ -110,7 +114,7 @@ class CollectionCommand extends Command
                         file_put_contents('public/' . $png, file_get_contents($carte['card_faces'][0]['image_uris']['png']));
                     }
 
-                    //Gestion du cas ou l'api retourne une description d'une autre maniere
+                    //Gestion du cas ou l'api retourne une description d'une autre manière
                     if(array_key_exists('oracle_text',$carte)){
                         $dbCarte->setDescription($carte['oracle_text']);
                     }

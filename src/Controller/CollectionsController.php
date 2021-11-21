@@ -18,6 +18,7 @@ class CollectionsController extends AbstractController
     public function listCollectionsAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
+        //Récupération des collection en base de données 
         $collections = $em->getRepository(Collections::class)->findAll();
         return $this->render('collections/collections.html.twig', [
             'collections' => $collections
@@ -30,6 +31,7 @@ class CollectionsController extends AbstractController
     public function listCartesCollectionAction(int $id, Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
+        //Récupération de la collection selectionnée
         $collection = $em->getRepository(Collections::class)->find($id);
         $cartes = $em->getRepository(Carte::class)->findBy([
             'collection' => $collection
