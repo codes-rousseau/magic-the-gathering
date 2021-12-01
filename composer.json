@@ -59,6 +59,7 @@
         }
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "*",
         "symfony/maker-bundle": "^1.36"
     }
 }
