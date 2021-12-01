@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        {% for row in set.cards|batch(4) %}
+            <div class="row" style="padding-bottom: 30px;">
+                {% for card in row %}
+                    <div class="col-sm-3">
+                        <div class="card" >
+                            <div class="card-header">
+                                {{ card.name }}
+                            </div>
+                            <img class="card-img-top" src="{{ asset(card.imagePath) }}" alt="Card image">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">{{ card.typeLine }}</h6>
+                                <p></p>
+                                <p class="card-text">{{ card.oracleText }}</p>
+                                <h7 class="card-subtitle mb-2 text-muted">Artiste : {{ card.artist }}</h7>
+                                {% if card.colorIdentity %}
+                                    <p></p>
+                                    <ul class="list-group">
+                                        {% for color in card.colorIdentity %}
+                                        <li class="list-group-item">{{ color }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

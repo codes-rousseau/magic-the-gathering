@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Magic : The Gathering!{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-dark navbar-expand-lg bg-dark" style="margin-bottom:30px">
+            <a class="navbar-brand">Magic : The Gathering</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link {{ app.request.get('_route') == 'set_list' ? 'active' }}" href="{{ path('set_list') }}">Collections</a>
+                </div>
+            </div>
+            {% block nav_ext %}{% endblock %}
+        </nav>
+        {% block content %}{% endblock %}
+    </body>
+</html>
