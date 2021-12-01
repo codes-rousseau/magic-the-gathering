@@ -15,23 +15,23 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class ScryfallApiClient
 {
     /**
-     * Récupération de la liste des collections sous forme de tableau.
+     * Récupération de la liste des collections.
      *
+     * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public static function listSets(): array
+    public static function fetchSets(): array
     {
         $client = HttpClient::create();
 
         $response = $client->request('GET', 'https://api.scryfall.com/sets/');
         $responseContent = $response->toArray();
-        $sets = $responseContent['data'];
 
-        return $sets;
+        return $responseContent['data'];
     }
 
     /**
@@ -46,7 +46,7 @@ class ScryfallApiClient
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public static function listCardsBySetCode($setCode): array
+    public static function fetchCardsBySetCode($setCode): array
     {
         $client = HttpClient::create();
 

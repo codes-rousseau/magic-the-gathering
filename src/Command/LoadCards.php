@@ -46,7 +46,7 @@ class LoadCards extends Command
         });
 
         // Récupération de la liste des collections
-        $sets = ScryfallApiClient::listSets();
+        $sets = ScryfallApiClient::fetchSets();
 
         // Recherche de la collection demandée (par nom) dans la liste des collections
         $searchResults = [];
@@ -91,13 +91,13 @@ class LoadCards extends Command
 
             $responseId = $io->askQuestion($question);
             $selectedSet = $searchResults[$responseId];
+
+            // Enregistrement de la collection demandée
+            $this->em->persist($selectedSet);
         }
 
-        // Enregistrement de la collection demandée
-        $this->em->persist($selectedSet);
-
         // Récupération de la liste des cartes associées à la collection demandée
-        $cards = ScryfallApiClient::listCardsBySetCode($selectedSet->getCode());
+        $cards = ScryfallApiClient::fetchCardsBySetCode($selectedSet->getCode());
 
         $io->text('Téléchargement des cartes de la collection "'.$selectedSet->getName().'"...');
         $io->progressStart(count($cards));
