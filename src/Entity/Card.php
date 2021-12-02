@@ -48,7 +48,7 @@ class Card
     private ?string $artist;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Set::class, inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity=Set::class, inversedBy="cards", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $set;

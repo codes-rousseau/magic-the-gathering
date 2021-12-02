@@ -92,8 +92,6 @@ class LoadCards extends Command
             $responseId = $io->askQuestion($question);
             $selectedSet = $searchResults[$responseId];
 
-            // Enregistrement de la collection demandée
-            $this->em->persist($selectedSet);
         }
 
         // Récupération de la liste des cartes associées à la collection demandée
