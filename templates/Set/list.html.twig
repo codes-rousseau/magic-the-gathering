@@ -2,10 +2,10 @@
 
 {% block content %}
     <div class="container">
-        {% for row in sets|batch(3) %}
+        {% for row in sets|batch(4) %}
             <div class="row" style="padding-bottom: 30px;">
                 {% for set in row %}
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="card" style="align-items: center">
                             <img class="card-img-top" src="{{ set.iconUri }}" style="width:50px; height:50px" alt="Set icon">
                             <div class="card-body">
