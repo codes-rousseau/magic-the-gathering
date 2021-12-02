@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block nav_ext %}
+    {{ form_start(form) }}
+    <form class="form-inline my-2 my-lg-0">
+        {{ form_widget(form.name) }}
+        <button class="btn btn-outline-info" type="submit">Search</button>
+    </form>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        {% for name, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ name }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% for row in cards|batch(4) %}
+            <div class="row" style="padding-bottom: 30px;">
+                {% for card in row %}
+                    <div class="col-sm-3">
+                        <div class="card" >
+                            <div class="card-header">
+                                {{ card.name }}
+                            </div>
+                            <img class="card-img-top" src="{{ asset(card.imagePath) }}" alt="Card image">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">{{ card.typeLine }}</h6>
+                                <p></p>
+                                <p class="card-text">{{ card.oracleText }}</p>
+                                <h7 class="card-subtitle mb-2 text-muted">Artiste : {{ card.artist }}</h7>
+                                {% if card.colorIdentity %}
+                                    <p></p>
+                                    <ul class="list-group">
+                                        {% for color in card.colorIdentity %}
+                                        <li class="list-group-item">{{ color }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        {% if returnSetId %}
+            <a class="btn btn-primary" href="{{ path('set_show', {id : returnSetId}) }}" role="button">Return to Set</a>
+        {% endif %}
+    </div>
+{% endblock content %}

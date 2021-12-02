@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        {% for row in sets|batch(4) %}
+            <div class="row" style="padding-bottom: 30px;">
+                {% for set in row %}
+                    <div class="col-sm-2">
+                        <div class="card" style="align-items: center">
+                            <img class="card-img-top" src="{{ set.iconUri }}" style="width:50px; height:50px" alt="Set icon">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ set.name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ set.cards|length }} cartes</h6>
+                                <a href="{{ path('set_show', {id : set.id}) }}" class="btn btn-primary">Afficher les cartes</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
