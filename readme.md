@@ -16,7 +16,10 @@ Une fois le développement effectué sur une branche spécifique, il faudra fair
 
 ## Installation
 - Cloner ce dépôt
-- Installer les dépendances avec composer
+- Installer les dépendances avec "composer install"
+- Installer les dépendances avec "yarn / npm install"
+- Compiler les assets avec la commande "yarn / npm encore dev"
+- Exécuter les migrations Doctrine avec la commande "php bin/console doc:mi:mi"
 
 ## Fonctionnalités à ajouter
 Actuellement ce projet Symfony ne contient que très peu de composants, il sera donc nécessaire de les ajouter en fonction du besoin de chaques fonctionnalités.
