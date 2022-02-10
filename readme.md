@@ -13,10 +13,21 @@ Une fois le développement effectué sur une branche spécifique, il faudra fair
 - Git
 - Symfony cli (optionnel)
 
-
 ## Installation
-- Cloner ce dépôt
-- Installer les dépendances avec composer
+
+- Construire l'environnement Docker puis le lancer en tâche de fond :
+```bash
+docker-compose build
+docker-compose up
+```
+Attention, le port 8080 doit être libre.
+
+- Installer les dépendances avec composer :
+```bash 
+docker-compose exec -u www-data php-fpm bash
+# Puis dans le container PHP-FPM exécuter la commande suivante : 
+composer install
+```
 
 ## Fonctionnalités à ajouter
 Actuellement ce projet Symfony ne contient que très peu de composants, il sera donc nécessaire de les ajouter en fonction du besoin de chaques fonctionnalités.

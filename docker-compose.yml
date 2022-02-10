@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  apache:
+    build:
+      context: .
+      dockerfile: ./docker/apache/Dockerfile
+    container_name: '${APP_NAME}-apache'
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/symfony
+      - ./docker/apache/virtualhost.conf:/usr/local/apache2/conf/virtualhost.conf:ro
+    depends_on:
+      - php-fpm
+    ports:
+      - '8080:${PORT_APACHE}'
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    container_name: '${APP_NAME}-php-fpm'
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/symfony
+      - ./docker/php-fpm/php.ini:/etc/php/7.4/php.ini:ro
+      - ./docker/php-fpm/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:ro
+    expose:
+      - '${PORT_PHP_FPM}'
