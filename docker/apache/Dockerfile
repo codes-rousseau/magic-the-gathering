@@ -4,6 +4,8 @@ MAINTAINER Thomas DUBUFFET <thomas.dubuffet@gmail.com>
 # Installation du module "rewrite"
 RUN sed -i \
         -e 's/^#\(LoadModule .*mod_rewrite.so\)/\1/' \
+        -e 's/^#\(LoadModule .*mod_proxy.so\)/\1/' \
+        -e 's/^#\(LoadModule .*mod_proxy_fcgi.so\)/\1/' \
         /usr/local/apache2/conf/httpd.conf
 
 # Configuration d'Apache
