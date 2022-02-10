@@ -1,4 +1,10 @@
 {
+    "brick/math": {
+        "version": "0.9.3"
+    },
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.5"
+    },
     "composer/pcre": {
         "version": "1.0.1"
     },
@@ -20,8 +26,73 @@
             "config/routes/annotations.yaml"
         ]
     },
+    "doctrine/cache": {
+        "version": "2.1.1"
+    },
+    "doctrine/collections": {
+        "version": "1.6.8"
+    },
+    "doctrine/common": {
+        "version": "3.2.2"
+    },
+    "doctrine/dbal": {
+        "version": "2.13.7"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
+    "doctrine/doctrine-bundle": {
+        "version": "2.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.4",
+            "ref": "f98f1affe028f8153a459d15f220ada3826b5aa2"
+        },
+        "files": [
+            "config/packages/doctrine.yaml",
+            "config/packages/prod/doctrine.yaml",
+            "config/packages/test/doctrine.yaml",
+            "src/Entity/.gitignore",
+            "src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "3.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.1",
+            "ref": "ee609429c9ee23e22d6fa5728211768f51ed2818"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
+    "doctrine/event-manager": {
+        "version": "1.1.1"
+    },
+    "doctrine/inflector": {
+        "version": "2.0.4"
+    },
+    "doctrine/instantiator": {
+        "version": "1.4.0"
+    },
     "doctrine/lexer": {
         "version": "1.2.2"
+    },
+    "doctrine/migrations": {
+        "version": "3.4.1"
+    },
+    "doctrine/orm": {
+        "version": "2.9.6"
+    },
+    "doctrine/persistence": {
+        "version": "2.3.0"
+    },
+    "doctrine/sql-formatter": {
+        "version": "1.1.2"
     },
     "friendsofphp/php-cs-fixer": {
         "version": "2.19",
@@ -35,6 +106,12 @@
             ".php-cs-fixer.dist.php"
         ]
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.5"
+    },
+    "laminas/laminas-code": {
+        "version": "4.5.1"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.1"
     },
@@ -46,6 +123,24 @@
     },
     "psr/log": {
         "version": "1.1.3"
+    },
+    "ramsey/collection": {
+        "version": "1.2.2"
+    },
+    "ramsey/uuid": {
+        "version": "4.2.3"
+    },
+    "ramsey/uuid-doctrine": {
+        "version": "1.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.3",
+            "ref": "471aed0fbf5620b8d7f92b7a5ebbbf6c0945c27a"
+        },
+        "files": [
+            "config/packages/ramsey_uuid_doctrine.yaml"
+        ]
     },
     "symfony/cache": {
         "version": "v4.4.19"
@@ -74,6 +169,12 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.4.19"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.5.0"
+    },
+    "symfony/doctrine-bridge": {
+        "version": "v4.4.37"
     },
     "symfony/dotenv": {
         "version": "v4.4.19"
@@ -141,6 +242,9 @@
     "symfony/options-resolver": {
         "version": "v4.4.37"
     },
+    "symfony/orm-pack": {
+        "version": "v2.2.0"
+    },
     "symfony/polyfill-intl-idn": {
         "version": "v1.22.0"
     },
@@ -159,7 +263,13 @@
     "symfony/polyfill-php80": {
         "version": "v1.22.0"
     },
+    "symfony/polyfill-php81": {
+        "version": "v1.24.0"
+    },
     "symfony/process": {
+        "version": "v4.4.37"
+    },
+    "symfony/proxy-manager-bridge": {
         "version": "v4.4.37"
     },
     "symfony/routing": {
