@@ -10,12 +10,14 @@ RUN apt-get update && \
 
 # Les paquets PHP version 7.4 ne sont pas disponibles dans les serveurs miroirs officiels de Debian 10 (buster).
 # Par conséquent, pour installer PHP il faut ajouter le dépôt de sury ci-dessous.
-RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |tee /etc/apt/sources.list.d/php.list
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
 
 # Installation des différents paquets linux
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        # Dépendance Yarn
+        gnupg2 \
         # PHP 7.4
         php7.4-fpm \
         php7.4-opcache \
@@ -34,6 +36,12 @@ RUN apt-get update && \
         curl \
         telnet \
         supervisor
+
+# Installation de NodeJS et Yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends nodejs yarn
 
 # Gestion du Timezone
 RUN ln -snf /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
@@ -71,4 +79,5 @@ RUN mkdir -p /var/run/php && \
 CMD ["/usr/bin/supervisord"]
 
 # Raccourci pour accéder aux commandes Symfony
-RUN echo 'alias sf="php bin/console"' >> /var/www/.bashrc
+RUN echo 'alias sf="php bin/console"' >> /var/www/.bashrc && \
+    echo 'alias php-cs-fixer="php vendor/bin/php-cs-fixer fix"' >> /var/www/.bashrc
