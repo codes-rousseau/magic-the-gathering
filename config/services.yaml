@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    scryfall.api_base_url: 'https://api.scryfall.com'
+    scryfall.interval_time_request: 100
 
 services:
     # default configuration for services in *this* file
@@ -18,6 +20,7 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Dto/Scryfall/Model'
             - '../src/Kernel.php'
             - '../src/Tests/'
 
@@ -29,3 +32,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\ScryfallService:
+        arguments:
+            $apiBaseUrl: '%scryfall.api_base_url%'
+            $intervalTimeRequest: '%scryfall.interval_time_request%'

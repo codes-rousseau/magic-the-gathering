@@ -22,7 +22,7 @@ class Set
     private UuidInterface $id;
 
     /**
-     * @ORM\Column(type="string", length=3)
+     * @ORM\Column(type="string", length=5)
      */
     private string $code;
 
@@ -42,7 +42,7 @@ class Set
     private string $iconUrl;
 
     /**
-     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="set", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="set", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private Collection $cards;
 
@@ -111,6 +111,9 @@ class Set
         return $this;
     }
 
+    /**
+     * @return Collection<Card>
+     */
     public function getCards(): Collection
     {
         return $this->cards;
