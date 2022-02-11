@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "doctrine/annotations": "^1.13",
+        "padraic/humbug_get_contents": "^1.1",
         "ramsey/uuid-doctrine": "^1.8",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "4.4.*",

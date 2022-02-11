@@ -11,6 +11,9 @@
 #IDE PHPStorm
 /.idea
 
+# Fichier cards
+/public/cards/
+
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
 /.php-cs-fixer.cache

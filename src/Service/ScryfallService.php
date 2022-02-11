@@ -58,7 +58,7 @@ class ScryfallService
      *
      * @return iterable<SetDto>
      *
-     *@throws HttpClientException\ServerExceptionInterface
+     * @throws HttpClientException\ServerExceptionInterface
      * @throws HttpClientException\RedirectionExceptionInterface
      * @throws HttpClientException\ClientExceptionInterface
      * @throws HttpClientException\TransportExceptionInterface
@@ -210,6 +210,9 @@ class ScryfallService
         $this->entityManager->flush();
     }
 
+    /**
+     * Supprime les caractères accentués et transforme la chaîne en majuscule.
+     */
     private function cleanName(string $name): string
     {
         $transliterator = Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC; Upper');
