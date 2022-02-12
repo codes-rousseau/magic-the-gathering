@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -24,7 +26,7 @@ class Card
     private string $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $imageUrl = null;
 
@@ -34,9 +36,16 @@ class Card
     private ?string $type = null;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="cards")
+     * @ORM\JoinTable(
+     *     name="cards_colors",
+     *     joinColumns={@ORM\JoinColumn(name="card_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="color_abbreviation", referencedColumnName="abbreviation")}
+     * )
+     *
+     * @var Collection<Color>
      */
-    private array $colors = [];
+    private Collection $colors;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -53,6 +62,11 @@ class Card
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private Set $set;
+
+    public function __construct()
+    {
+        $this->colors = new ArrayCollection();
+    }
 
     public function getId(): UuidInterface
     {
@@ -102,12 +116,36 @@ class Card
         return $this;
     }
 
-    public function getColors(): array
+    /**
+     * @return Collection<Color>
+     */
+    public function getColors()
     {
         return $this->colors;
     }
 
-    public function setColors(array $colors): self
+    public function addColor(Color $color): self
+    {
+        if (!$this->colors->contains($color)) {
+            $this->colors->add($color);
+        }
+
+        return $this;
+    }
+
+    public function removeColor(Color $color): self
+    {
+        if ($this->colors->contains($color)) {
+            $this->colors->removeElement($color);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Collection<Color> $colors
+     */
+    public function setColors($colors): self
     {
         $this->colors = $colors;
 

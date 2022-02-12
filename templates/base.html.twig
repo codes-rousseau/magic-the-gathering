@@ -1,19 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
+        <!-- Meta description -->
+        <meta charset="UTF-8"/>
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="author" content="Thomas DUBUFFET" />
+
+        <title>{% block title %}Magic{% endblock %}</title>
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
+
     <body>
+        <header>
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container">
+                    <div class="navbar-brand d-flex align-items-center">
+                        {% block header %}
+                            <strong>Magic</strong>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>

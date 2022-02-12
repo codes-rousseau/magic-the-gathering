@@ -4,8 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    # Taille maximum des fichiers à télécharger (1Mo)
-    max_download_file_size: 1048576
+    # Taille maximum des fichiers à télécharger (2Mo)
+    max_download_file_size: 2097152
     public_directory: '%kernel.project_dir%/public'
     scryfall.api_base_url: 'https://api.scryfall.com'
     scryfall.interval_time_request: 100

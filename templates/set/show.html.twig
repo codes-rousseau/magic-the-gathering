@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Set "{{ set.name }}"
+{% endblock title %}
+
+{% block header %}
+    {{ parent() }}&nbsp;&ndash;&nbsp;<img class="icon-set text-white" src="{{ set.iconUrl }}" alt="Icon of {{ set.name }}" /> {{ set.name }}
+{% endblock %}
+
+{% block body %}
+    <main role="main">
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    {% for card in set.cards %}
+                        <div class="col-md-3">
+                            <div class="card mb-3 text-white bg-dark">
+                                {% if card.imageUrl is defined and card.imageUrl|length > 0 %}
+                                    <img class="card-img-top" src="{{ asset(card.imageUrl) }}" alt="Card image" />
+                                {% endif %}
+
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ card.name }}</h5>
+
+                                    {% if card.type %}
+                                        <h6 class="card-subtitle">{{ card.type }}</h6>
+                                    {% endif %}
+
+                                    {% if card.description %}
+                                        <p class="card-text pt-1 small">{{ card.description }}</p>
+                                    {% endif %}
+
+                                    <div class="d-flex flex-row-reverse pt-2">
+                                        {% if card.artist %}
+                                            <small class="text-muted">{{ card.artist }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <ul class="list-group list-group-flush">
+                                    {% for color in card.colors %}
+                                        <li class="list-group-item">
+                                            {{ color.basicLand }} <small>({{ color.abbreviation }} &ndash; {{ color.name }})</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

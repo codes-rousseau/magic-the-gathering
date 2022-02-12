@@ -9,6 +9,7 @@
         "doctrine/annotations": "^1.13",
         "padraic/humbug_get_contents": "^1.1",
         "ramsey/uuid-doctrine": "^1.8",
+        "sensio/framework-extra-bundle": "^6.2",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",

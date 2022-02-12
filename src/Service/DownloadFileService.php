@@ -101,7 +101,7 @@ class DownloadFileService
      * @param string $from              chemin actuel du fichier
      * @param string $relativeDirectory répertoire où déplacer le fichier
      *
-     * @return false|string chemin vers le nouveau emplacement du fichier
+     * @return false|string chemin relative vers le nouveau emplacement du fichier public
      */
     public function moveFileInPublicDirectory(string $from, string $relativeDirectory)
     {
@@ -116,7 +116,7 @@ class DownloadFileService
 
         $absoluteFile = $absoluteDirectory.'/'.basename($from);
         if (true === rename($from, $absoluteFile)) {
-            return $absoluteFile;
+            return substr($absoluteFile, strlen($this->publicDirectory) + 1);
         }
 
         return false;

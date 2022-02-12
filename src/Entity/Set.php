@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Repository\SetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass=SetRepository::class)
  * @ORM\Table(name="`set`")
  */
 class Set
@@ -141,6 +142,9 @@ class Set
         return $this;
     }
 
+    /**
+     * @param Collection<Card> $cards
+     */
     public function setCards(Collection $cards): self
     {
         $this->cards = $cards;

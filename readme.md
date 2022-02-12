@@ -25,8 +25,20 @@ Attention, le port 8080 doit être libre.
 - Installer les dépendances avec composer :
 ```bash 
 docker-compose exec -u www-data php-fpm bash
-# Puis dans le container PHP-FPM exécuter la commande suivante : 
+```
+Dans le container PHP-FPM, il faut lancer les commandes suivantes :
+```bash 
+# Installation des dépendances et yarn
 composer install
+yarn install
+
+# Création de la base de données
+sf doctrine:database:create
+# Migration pour le schéma de la base de données
+sf doctrine:migrations:migrate
+
+# Création d'une collection Magic
+sf app:create-set
 ```
 
 ## Fonctionnalités à ajouter
