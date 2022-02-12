@@ -12,8 +12,42 @@
     <main role="main">
         <div class="album py-5 bg-light">
             <div class="container">
+                <h3 class="mb-4">Filters the list</h3>
+                {% if form.vars.submitted %}
+                    {% if cards|length == 0 %}
+                        <div class="alert alert-warning" role="alert">
+                            No card for this search.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success" role="alert">
+                            {{ cards|length }} cards were found for this search.
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                <div class="pb-4">
+                    {{ form_start(form, ) }}
+                        {{ form_rest(form) }}
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <a href="{{ path('set_list') }}" class="btn btn-outline-dark" role="button">
+                                    Back to list
+                                </a>
+                            </div>
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                                <button class="btn btn-outline-danger" type="reset">Reset these filters</button>
+                            </div>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+
+                {% if cards|length > 0 %}
+                    <h3 class="mb-4">{{ cards|length }} cards</h3>
+                {% endif %}
+
                 <div class="row">
-                    {% for card in set.cards %}
+                    {% for card in cards %}
                         <div class="col-md-3">
                             <div class="card mb-3 text-white bg-dark">
                                 {% if card.imageUrl is defined and card.imageUrl|length > 0 %}
@@ -40,7 +74,7 @@
 
                                 <ul class="list-group list-group-flush">
                                     {% for color in card.colors %}
-                                        <li class="list-group-item">
+                                        <li class="list-group-item text-uppercase text-black">
                                             {{ color.basicLand }} <small>({{ color.abbreviation }} &ndash; {{ color.name }})</small>
                                         </li>
                                     {% endfor %}

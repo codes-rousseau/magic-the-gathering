@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Repository\CardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass=CardRepository::class)
  */
 class Card
 {
@@ -36,7 +37,7 @@ class Card
     private ?string $type = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="cards")
+     * @ORM\ManyToMany(targetEntity=Color::class)
      * @ORM\JoinTable(
      *     name="cards_colors",
      *     joinColumns={@ORM\JoinColumn(name="card_id", referencedColumnName="id")},
