@@ -36,7 +36,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\ScryfallService:
+    App\Service\ScryfallApiService:
         arguments:
             $apiBaseUrl: '%scryfall.api_base_url%'
             $intervalTimeRequest: '%scryfall.interval_time_request%'

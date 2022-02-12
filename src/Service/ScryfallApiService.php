@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Dto\Scryfall\Model\CardDto;
-use App\Dto\Scryfall\Model\CardListDto;
-use App\Dto\Scryfall\Model\SetDto;
-use App\Dto\Scryfall\Model\SetListDto;
-use App\Dto\Scryfall\Transformer\CardDtoTransformer;
-use App\Dto\Scryfall\Transformer\SetDtoTransformer;
-use App\Entity\Card;
-use App\Entity\Set;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Dto\Scryfall\CardDto;
+use App\Dto\Scryfall\CardListDto;
+use App\Dto\Scryfall\SetDto;
+use App\Dto\Scryfall\SetListDto;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -20,13 +15,10 @@ use Symfony\Contracts\HttpClient\Exception as HttpClientException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Transliterator;
 
-class ScryfallService
+class ScryfallApiService
 {
     private HttpClientInterface $httpClient;
     private SerializerInterface $serializer;
-    private EntityManagerInterface $entityManager;
-    private SetDtoTransformer $setDtoTransformer;
-    private CardDtoTransformer $cardDtoTransformer;
     private string $apiBaseUrl;
 
     /**
@@ -38,17 +30,11 @@ class ScryfallService
     public function __construct(
         HttpClientInterface $httpClient,
         SerializerInterface $serializer,
-        EntityManagerInterface $entityManager,
-        SetDtoTransformer $setDtoTransformer,
-        CardDtoTransformer $cardDtoTransformer,
         string $apiBaseUrl,
         int $intervalTimeRequest
     ) {
         $this->httpClient = $httpClient;
         $this->serializer = $serializer;
-        $this->entityManager = $entityManager;
-        $this->setDtoTransformer = $setDtoTransformer;
-        $this->cardDtoTransformer = $cardDtoTransformer;
         $this->apiBaseUrl = $apiBaseUrl;
         $this->intervalTimeRequest = $intervalTimeRequest;
     }
@@ -74,7 +60,7 @@ class ScryfallService
             ]);
 
             if (Response::HTTP_OK !== $response->getStatusCode()) {
-                throw new \RuntimeException('Response status code is not the expected.');
+                throw new RuntimeException('Response status code is not the expected.');
             }
 
             /** @var SetListDto $listSet */
@@ -164,50 +150,6 @@ class ScryfallService
             // Pour respecter les règles "Rate Limites" de l'API
             usleep($this->intervalTimeRequest);
         } while (true === $listCard->hasMore && null !== $path);
-    }
-
-    public function createSet(SetDto $setDto)
-    {
-        $cardRepository = $this->entityManager->getRepository(Card::class);
-        $setRepository = $this->entityManager->getRepository(Set::class);
-        $set = $setRepository->find($setDto->id);
-
-        if (!$set instanceof Set) {
-            // Collection absente de la BDD, nous créons la collection
-            $set = $this->setDtoTransformer->transform($setDto);
-            $this->entityManager->persist($set);
-        }
-
-        // Alimente un tableau qui servira à déterminer s'il faut supprimer
-        // des cartes qui ne sont plus présente dans la collection.
-        $toDelete = [];
-        foreach ($set->getCards() as $card) {
-            $toDelete[$card->getId()->toString()] = $card;
-        }
-
-        // Récupère les cartes de la collection
-        foreach ($this->getCardsBySetCode($set->getCode()) as $cardDto) {
-            if (array_key_exists($cardDto->id, $toDelete)) {
-                // Carte présente
-                unset($toDelete[$cardDto->id]);
-            }
-
-            // Création de la carte et ajout de celle-ci
-            $card = $cardRepository->find($cardDto->id);
-            if (!$card instanceof Card) {
-                // Carte absente de la BDD, nous créons la carte
-                $card = $this->cardDtoTransformer->transform($cardDto);
-            }
-
-            $set->addCard($card);
-        }
-
-        foreach ($toDelete as $cardToDelete) {
-            // Suppression de la carte de la collection
-            $set->removeCard($cardToDelete);
-        }
-
-        $this->entityManager->flush();
     }
 
     /**

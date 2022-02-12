@@ -28,6 +28,7 @@ class SearchCardType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Optional(),
+                    new Assert\Length(['min' => 2]),
                 ],
             ])
             ->add('card_colors', EntityType::class, [

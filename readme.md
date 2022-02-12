@@ -20,7 +20,8 @@ Une fois le développement effectué sur une branche spécifique, il faudra fair
 docker-compose build
 docker-compose up
 ```
-Attention, le port 8080 doit être libre.
+**Attention, le port 8080 doit être libre.**
+L'application sera disponible à l'adresse suivante : http://localhost:8080.
 
 - Installer les dépendances avec composer :
 ```bash 

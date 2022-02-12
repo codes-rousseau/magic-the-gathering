@@ -36,7 +36,9 @@
                             </div>
                             <div class="col-sm-10">
                                 <button class="btn btn-primary" type="submit">Search</button>
-                                <button class="btn btn-outline-danger" type="reset">Reset these filters</button>
+                                <a href="{{ path('set_show', {'id': set.id}) }}" class="btn btn-outline-danger">
+                                    Reset these filters
+                                </a>
                             </div>
                         </div>
                     {{ form_end(form) }}

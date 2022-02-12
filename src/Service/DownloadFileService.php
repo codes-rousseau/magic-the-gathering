@@ -105,10 +105,8 @@ class DownloadFileService
      */
     public function moveFileInPublicDirectory(string $from, string $relativeDirectory)
     {
-        $absoluteDirectory = $this->publicDirectory.'/'.$relativeDirectory;
-        if (0 !== strpos($absoluteDirectory, $this->publicDirectory)) {
-            throw new FileException('Please enter a relative path.');
-        }
+        $absoluteDirectory = realpath($this->publicDirectory.'/'.$relativeDirectory);
+        $this->assertPathIsInPublicDirectory($absoluteDirectory);
 
         if (!is_dir($absoluteDirectory)) {
             mkdir($absoluteDirectory, 0777, true);
@@ -120,5 +118,32 @@ class DownloadFileService
         }
 
         return false;
+    }
+
+    /**
+     * Supprimer un fichier qui se situe dans le répertoire public.
+     */
+    public function removeFileInPublicDirectory(string $relativeFile): bool
+    {
+        $absoluteFile = realpath(dirname($this->publicDirectory.'/'.$relativeFile)).'/'.basename($relativeFile);
+        $this->assertPathIsInPublicDirectory($absoluteFile);
+
+        if (file_exists($absoluteFile)) {
+            unlink($absoluteFile);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Vérifie qu'un fichier/répertoire en chemin absolu est dans le répertoire public.
+     */
+    private function assertPathIsInPublicDirectory(string $absolutePath): void
+    {
+        if (0 !== strpos($absolutePath, $this->publicDirectory)) {
+            throw new FileException('Please enter a relative path.');
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Dto\Scryfall\Model;
+namespace App\Dto\Scryfall;
 
 final class CardListDto extends AbstractListDto
 {

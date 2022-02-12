@@ -8,7 +8,7 @@ use App\Entity\Set;
 use App\Form\SearchCardType;
 use App\Repository\CardRepository;
 use App\Repository\SetRepository;
-use App\Service\ScryfallService;
+use Doctrine\ORM\NonUniqueResultException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SetController extends AbstractController
 {
-    private ScryfallService $scryfall;
     private SetRepository $sets;
 
-    public function __construct(ScryfallService $scryfall, SetRepository $sets)
+    public function __construct(SetRepository $sets)
     {
-        $this->scryfall = $scryfall;
         $this->sets = $sets;
     }
 
@@ -38,7 +36,7 @@ class SetController extends AbstractController
     /**
      * @Route(methods={"GET", "POST"}, name="set_show", path="/show/{id}")
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function showAction(
         CardRepository $cards,
