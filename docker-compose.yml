@@ -1,0 +1,57 @@
+networks:
+    symfony_network:
+
+volumes:
+    db-data:
+
+services:
+
+    php:
+        build:
+            context: .
+            dockerfile: ./.tools/docker/php/Dockerfile
+        container_name: php_docker_symfony_magic
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./:/var/www
+        networks:
+            - symfony_network
+
+    mysql:
+        image: mysql:8.0
+        container_name: mysql_docker_symfony_magic
+        ports:
+            - "3306:3306"
+        volumes:
+            - db-data:/var/lib/mysql
+        command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        restart: always # always restart unless stopped manually
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+        networks:
+            - symfony_network
+
+    node:
+        image: node:latest
+        container_name: node_docker_symfony_magic
+        volumes:
+            - ./:/var/www
+        working_dir: /var/www
+        networks:
+            - symfony_network
+
+    # Dev tools
+    adminer:
+        image: adminer
+        container_name: adminer_docker_symfony_magic
+        restart: always
+        ports:
+            - 8080:8080
+        environment:
+            ADMINER_DESIGN: pepa-linha
+            ADMINER_DEFAULT_SERVER: mysql
+        depends_on:
+            - mysql
+        networks:
+            - symfony_network
