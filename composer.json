@@ -58,5 +58,9 @@
             "allow-contrib": false,
             "require": "4.4.*"
         }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.1",
+        "phpstan/phpstan": "^1.4"
     }
 }
