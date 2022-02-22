@@ -1,4 +1,7 @@
 {
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.5"
+    },
     "composer/pcre": {
         "version": "1.0.1"
     },
@@ -8,11 +11,57 @@
     "composer/xdebug-handler": {
         "version": "2.0.4"
     },
+    "doctrine/cache": {
+        "version": "2.1.1"
+    },
+    "doctrine/collections": {
+        "version": "1.6.8"
+    },
+    "doctrine/common": {
+        "version": "3.2.2"
+    },
+    "doctrine/dbal": {
+        "version": "2.13.7"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "3.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.1",
+            "ref": "ee609429c9ee23e22d6fa5728211768f51ed2818"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
+    "doctrine/event-manager": {
+        "version": "1.1.1"
+    },
     "doctrine/inflector": {
         "version": "2.0.4"
     },
+    "doctrine/instantiator": {
+        "version": "1.4.0"
+    },
     "doctrine/lexer": {
         "version": "1.2.2"
+    },
+    "doctrine/migrations": {
+        "version": "3.4.1"
+    },
+    "doctrine/orm": {
+        "version": "2.9.6"
+    },
+    "doctrine/persistence": {
+        "version": "2.3.0"
+    },
+    "doctrine/sql-formatter": {
+        "version": "1.1.2"
     },
     "friendsofphp/php-cs-fixer": {
         "version": "2.19",
@@ -25,6 +74,12 @@
         "files": [
             ".php-cs-fixer.dist.php"
         ]
+    },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.5"
+    },
+    "laminas/laminas-code": {
+        "version": "4.5.1"
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
@@ -86,6 +141,9 @@
     },
     "symfony/deprecation-contracts": {
         "version": "v2.5.0"
+    },
+    "symfony/doctrine-bridge": {
+        "version": "v4.4.37"
     },
     "symfony/dotenv": {
         "version": "v4.4.19"
@@ -162,6 +220,9 @@
     "symfony/options-resolver": {
         "version": "v4.4.37"
     },
+    "symfony/orm-pack": {
+        "version": "v2.2.0"
+    },
     "symfony/polyfill-intl-idn": {
         "version": "v1.22.0"
     },
@@ -185,6 +246,9 @@
     },
     "symfony/profiler-pack": {
         "version": "v1.0.6"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v4.4.37"
     },
     "symfony/routing": {
         "version": "4.2",
