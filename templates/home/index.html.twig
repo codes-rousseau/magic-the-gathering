@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <style>
+        .collections{
+            display: flex;
+            gap: 3%;
+            margin: 0 20px;
+        }
+        .collection__card{
+            width: 200px;
+            max-width: 100%;
+            border: 1px solid orange;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .collection__svg{
+            display: flex;
+            justify-content: center;
+        }
+        .collection__name{
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .collection__code{
+            font-weight: normal;
+        }
+    </style>
+    <div class="collections">
+        {% for collection in collections %}
+            <a class="collection__card" href="#">
+                <div class="collection__svg">
+                    <img src="{{ collection.icon }}" alt="" style="width: 50px">
+                </div>
+                <div class="collection__content">
+
+                    <div class="collection__name">
+                        {{ collection.name }}<span class="collection__code">
+                            ({{ collection.code }})
+                        </span>
+                    </div>
+                    <div class="collection__release">
+                        Publié : {{ collection.releaseAt | date('d/m/Y') }}
+                    </div>
+                </div>
+
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
