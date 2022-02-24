@@ -1,0 +1,91 @@
+body{
+    margin: 0;
+}
+a{
+    color: black;
+    text-decoration: none;
+}
+.link__home{
+    width: 100%;
+    padding: 20px;
+    background-color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+
+.collections{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3%;
+    margin: 0 20px;
+}
+.collection__card{
+    width: 200px;
+    max-width: 100%;
+    border: 1px solid orange;
+    border-radius: 10px;
+    padding: 10px;
+}
+.collection__svg{
+    display: flex;
+    justify-content: center;
+}
+.collection__name{
+    font-weight: bold;
+    margin: 10px 0;
+}
+.collection__code{
+    font-weight: normal;
+}
+
+
+
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3%;
+    margin: 0 20px;
+}
+.card__card{
+    width: 30%;
+    max-width: 100%;
+    border: 1px solid orange;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.card__image{
+    display: flex;
+    justify-content: center;
+}
+.card__name{
+    font-weight: bold;
+    margin: 10px 0;
+}
+.card__color{
+    margin-top: 20px;
+}
+.filters{
+    width: 50%;
+    margin: 0 auto 20px auto;
+    border: 1px solid black;
+}
+form{
+    display: flex;
+    align-items: end;
+}
+.filter__item{
+    width: 25%;
+    padding: 10px;
+}
+select,
+button,
+input{
+    width: 100%;
+}

@@ -3,51 +3,6 @@
 {% block title %}Cards of Magic{% endblock %}
 
 {% block body %}
-    <style>
-        .cards{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3%;
-            margin: 0 20px;
-        }
-        .card__card{
-            width: 30%;
-            max-width: 100%;
-            border: 1px solid orange;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        .card__image{
-            display: flex;
-            justify-content: center;
-        }
-        .card__name{
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        .card__color{
-            margin-top: 20px;
-        }
-        .filters{
-            width: 50%;
-            margin: 0 auto 20px auto;
-            border: 1px solid black;
-        }
-        form{
-            display: flex;
-            align-items: end;
-        }
-        .filter__item{
-            width: 25%;
-            padding: 10px;
-        }
-        select,
-        button,
-        input{
-            width: 100%;
-        }
-    </style>
     <div class="filters">
         {{ form_start(form) }}
         <div class="filter__item filter__name">
