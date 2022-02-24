@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Classes\Search;
+use App\Form\SearchCardType;
 use App\Repository\CardRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +17,21 @@ class CardsController extends AbstractController
      */
     public function index( int $collection, Request $request, CardRepository $cardRepository): Response
     {
+
+        $cards = $cardRepository->findByCollection($collection);
+
+        $search = new Search();
+
+        $form = $this->createForm(SearchCardType::class, $search);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cards = $cardRepository->findByCollectionAndForm($search, $collection);
+        }
+
         return $this->render('cards/index.html.twig', [
-            'cards' => $cardRepository->findByCollection($collection),
+            'cards' => $cards,
+            'form' => $form->createView(),
         ]);
     }
 }

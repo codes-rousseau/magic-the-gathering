@@ -29,7 +29,41 @@
         .card__color{
             margin-top: 20px;
         }
+        .filters{
+            width: 50%;
+            margin: 0 auto 20px auto;
+            border: 1px solid black;
+        }
+        form{
+            display: flex;
+            align-items: end;
+        }
+        .filter__item{
+            width: 25%;
+            padding: 10px;
+        }
+        select,
+        button,
+        input{
+            width: 100%;
+        }
     </style>
+    <div class="filters">
+        {{ form_start(form) }}
+        <div class="filter__item filter__name">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="filter__item filter__colors">
+            {{ form_row(form.color) }}
+        </div>
+        <div class="filter__item filter__types">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="filter__item filter__submit">
+            {{ form_row(form.submit) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
     <div class="cards">
         {% for card in cards %}
             <div class="card__card">
