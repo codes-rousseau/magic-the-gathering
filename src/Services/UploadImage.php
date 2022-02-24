@@ -16,7 +16,9 @@ class UploadImage
     public function upload(string $directory, string $imageName, string $uri): string
     {
         $path = $this->params->get('kernel.project_dir').'/public'.'/'.$directory.'/';
-        mkdir($path, 0777, true);
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
         file_put_contents($path.$imageName, file_get_contents($uri));
 
         return '/'.$directory.'/'.$imageName;

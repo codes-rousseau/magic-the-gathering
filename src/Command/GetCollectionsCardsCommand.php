@@ -140,6 +140,8 @@ class GetCollectionsCardsCommand extends Command
         $this->em->persist($new_collection);
         $this->em->flush();
 
+        $io->success('La collection est importé !');
+
         return 0;
     }
 
