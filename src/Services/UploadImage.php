@@ -15,7 +15,9 @@ class UploadImage
 
     public function upload( string $directory, string $imageName, string $uri ): string
     {
-        file_put_contents($this->params->get('kernel.project_dir') . '/public' . '/' . $directory . '/' . $imageName, file_get_contents($uri));
+        $path = $this->params->get('kernel.project_dir') . '/public' . '/' . $directory . '/';
+        mkdir($path, 0777, true);
+        file_put_contents($path . $imageName, file_get_contents($uri));
         return '/' . $directory . '/' . $imageName;
     }
 }
