@@ -1,5 +1,17 @@
 # Magic The Gathering
 
+## Utilisation
+
+Pour ajouter une collection de cartes magic, exécuter la commande :
+
+    php bin/console app:get-collections-cards
+
+Vous pouvez directement lancer l'import d'une collection avec cette commande :
+
+    php bin/console app:get-collections-cards "<nom>"
+
+## Description
+
 Ce projet a pour but de récupérer simplement (via une commande Symfony), les collections de cartes disponibles sur l'API https://scryfall.com/docs/api et ensuite afficher sur une page html le résultat.
 
 Il n'y a pas de framework CSS, ni d'utilisation de JS obligatoire.
