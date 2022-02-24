@@ -25,7 +25,7 @@ class Color
     private $label;
 
     /**
-     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="color")
+     * @ORM\ManyToMany(targetEntity=Card::class, mappedBy="colors")
      */
     private $cards;
 
@@ -63,7 +63,7 @@ class Color
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
-            $card->setColor($this);
+            $card->addColor($this);
         }
 
         return $this;
@@ -72,10 +72,7 @@ class Color
     public function removeCard(Card $card): self
     {
         if ($this->cards->removeElement($card)) {
-            // set the owning side to null (unless already changed)
-            if ($card->getColor() === $this) {
-                $card->setColor(null);
-            }
+            $card->removeColor($this);
         }
 
         return $this;

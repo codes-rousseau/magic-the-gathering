@@ -45,10 +45,9 @@ class Card
     private $collections;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Color::class, inversedBy="cards")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="cards")
      */
-    private $color;
+    private $colors;
 
     /**
      * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="cards")
@@ -59,6 +58,7 @@ class Card
     public function __construct()
     {
         $this->collections = new ArrayCollection();
+        $this->colors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,14 +141,26 @@ class Card
         return $this;
     }
 
-    public function getColor(): ?Color
+    /**
+     * @return Collection<int, Color>
+     */
+    public function getColors(): Collection
     {
-        return $this->color;
+        return $this->colors;
     }
 
-    public function setColor(?Color $color): self
+    public function addColor(Color $color): self
     {
-        $this->color = $color;
+        if (!$this->colors->contains($color)) {
+            $this->colors[] = $color;
+        }
+
+        return $this;
+    }
+
+    public function removeColor(Color $color): self
+    {
+        $this->colors->removeElement($color);
 
         return $this;
     }
