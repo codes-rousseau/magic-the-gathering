@@ -15,9 +15,8 @@ class CardsController extends AbstractController
     /**
      * @Route("/cards/{collection}", name="cards", requirements={"collectionId"="\d+"})
      */
-    public function index( int $collection, Request $request, CardRepository $cardRepository): Response
+    public function index(int $collection, Request $request, CardRepository $cardRepository): Response
     {
-
         $cards = $cardRepository->findByCollection($collection);
 
         $search = new Search();

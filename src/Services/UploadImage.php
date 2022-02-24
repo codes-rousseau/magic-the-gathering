@@ -13,11 +13,12 @@ class UploadImage
         $this->params = $parameterBag;
     }
 
-    public function upload( string $directory, string $imageName, string $uri ): string
+    public function upload(string $directory, string $imageName, string $uri): string
     {
-        $path = $this->params->get('kernel.project_dir') . '/public' . '/' . $directory . '/';
+        $path = $this->params->get('kernel.project_dir').'/public'.'/'.$directory.'/';
         mkdir($path, 0777, true);
-        file_put_contents($path . $imageName, file_get_contents($uri));
-        return '/' . $directory . '/' . $imageName;
+        file_put_contents($path.$imageName, file_get_contents($uri));
+
+        return '/'.$directory.'/'.$imageName;
     }
 }

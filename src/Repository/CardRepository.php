@@ -22,10 +22,10 @@ class CardRepository extends ServiceEntityRepository
         parent::__construct($registry, Card::class);
     }
 
-     /**
-      * @return Card[] Returns an array of Card objects
-      */
-    public function findByCollection( int $collection): array
+    /**
+     * @return Card[] Returns an array of Card objects
+     */
+    public function findByCollection(int $collection): array
     {
         return $this->createQueryBuilder('c')
             ->leftJoin('c.collections', 'co')
@@ -38,7 +38,6 @@ class CardRepository extends ServiceEntityRepository
 
     public function findByCollectionAndForm(Search $search, int $collection)
     {
-
         $qb = $this->createQueryBuilder('c')
             ->leftJoin('c.collections', 'collections')
             ->where('collections.id = :collection')

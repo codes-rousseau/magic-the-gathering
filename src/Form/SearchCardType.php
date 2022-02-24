@@ -19,7 +19,7 @@ class SearchCardType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'required' => false,
-                'label' => 'Nom'
+                'label' => 'Nom',
             ])
             ->add('color', EntityType::class, [
                 'required' => false,
@@ -38,16 +38,15 @@ class SearchCardType extends AbstractType
                 'expanded' => false,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Rechercher'
+                'label' => 'Rechercher',
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Search::class,
-            'crsf_protection' => false
+            'crsf_protection' => false,
         ]);
     }
 }

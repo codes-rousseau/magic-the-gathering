@@ -20,8 +20,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -39,7 +37,6 @@ class GetCollectionsCardsCommand extends Command
     private CardRepository $cardRepository;
     private EntityManagerInterface $em;
     private UploadImage $upload;
-
 
     public function __construct(
         ScryFall $scryfall,
@@ -105,26 +102,25 @@ class GetCollectionsCardsCommand extends Command
 
         $new_collection = new Collections();
         $collection_exist = $this->collectionRepository->findOneBy(['name' => $collection]);
-        if( $collection_exist ){
+        if ($collection_exist) {
             $new_collection = $collection_exist;
         }
 
-        $upload_dir = $this->upload->upload('collection', $collection_load['code'] . '.svg', $collection_load['icon_svg_uri']);
+        $upload_dir = $this->upload->upload('collection', $collection_load['code'].'.svg', $collection_load['icon_svg_uri']);
 
         $new_collection->setCode($collection_load['code'])
             ->setName($collection_load['name'])
             ->setReleaseAt(new DateTime($collection_load['released_at']))
             ->setIcon($upload_dir);
 
-        foreach ($cards as $card){
+        foreach ($cards as $card) {
             $new_card = new Card();
             $card_exist = $this->cardRepository->findOneBy(['name' => $collection]);
-            if( $card_exist ){
+            if ($card_exist) {
                 $new_card = $card_exist;
             }
 
-
-            $upload_dir = $this->upload->upload('card', $card['id'] . '.png', $card['image_uris']['png']);
+            $upload_dir = $this->upload->upload('card', $card['id'].'.png', $card['image_uris']['png']);
 
             $new_card->setName($card['name'])
                 ->setDescription($card['oracle_text'])
@@ -132,26 +128,26 @@ class GetCollectionsCardsCommand extends Command
                 ->setArtistName($card['artist'])
                 ->setType($this->createType($card['type_line']));
 
-            foreach ($card['colors'] as $color){
-                $new_card->addColor( $this->createColors($color));
+            foreach ($card['colors'] as $color) {
+                $new_card->addColor($this->createColors($color));
             }
 
             $new_collection->addCard($new_card);
 
             $this->em->persist($new_card);
-
         }
 
         $this->em->persist($new_collection);
         $this->em->flush();
+
         return 0;
     }
 
-    private function createColors( $name ): Color
+    private function createColors($name): Color
     {
         $color = new Color();
         $colorExist = $this->colorRepository->findOneBy(['label' => $name]);
-        if( $colorExist ){
+        if ($colorExist) {
             $color = $colorExist;
         }
         $color->setLabel($name);
@@ -162,11 +158,11 @@ class GetCollectionsCardsCommand extends Command
         return $color;
     }
 
-    private function createType( $name ): Type
+    private function createType($name): Type
     {
         $type = new Type();
         $typeExist = $this->typeRepository->findOneBy(['label' => $name]);
-        if( $typeExist ){
+        if ($typeExist) {
             $type = $typeExist;
         }
         $type->setLabel($name);
