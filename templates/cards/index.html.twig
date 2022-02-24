@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CardsController!{% endblock %}
+
+{% block body %}
+    <style>
+        .cards{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3%;
+            margin: 0 20px;
+        }
+        .card__card{
+            width: 30%;
+            max-width: 100%;
+            border: 1px solid orange;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .card__image{
+            display: flex;
+            justify-content: center;
+        }
+        .card__name{
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .card__color{
+            margin-top: 20px;
+        }
+    </style>
+    <div class="cards">
+        {% for card in cards %}
+            <div class="card__card">
+                <div class="card__image">
+                    <img src="{{ card.image }}" alt="" style="width: 150px">
+                </div>
+                <div class="card__content">
+                    <div class="card__name">
+                        {{ card.name }}
+                    </div>
+                    <div class="card__description">
+                        {{ card.description }}
+                    </div>
+                    <div class="card__color">
+                        Couleurs :
+                        {% for color in card.colors %}
+                            {{ color.label }},
+                        {% endfor %}
+                    </div>
+                    <div class="card__type">
+                        Type :
+                        {{ card.type.label }}
+                    </div>
+                    <div class="card__artist">
+                        Artiste :
+                        {{ card.artistName }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

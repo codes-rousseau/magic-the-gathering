@@ -6,6 +6,7 @@
     <style>
         .collections{
             display: flex;
+            flex-wrap: wrap;
             gap: 3%;
             margin: 0 20px;
         }
@@ -30,7 +31,7 @@
     </style>
     <div class="collections">
         {% for collection in collections %}
-            <a class="collection__card" href="#">
+            <a class="collection__card" href="{{path('cards', {'collection': collection.id}) }}">
                 <div class="collection__svg">
                     <img src="{{ collection.icon }}" alt="" style="width: 50px">
                 </div>
