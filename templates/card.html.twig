@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cartes</h1>
+
+
+    {% for card in cards %}
+
+        <p><b>Nom</b> :{{ card.name }} <b>Type</b> :{{ card.type }}, <b>Couleur</b> :{{ card.color }}, <b>Artiste</b> : {{ card.artist }}
+            <br><b>Description</b> : {{ card.description }}</p>
+        <p><img src="{{ asset( card.target) }}" alt="{{ card.name }} "></p>
+
+    {% endfor %}
+
+
+
+{% endblock %}
+
+
+

@@ -26,7 +26,7 @@ class CardCollection
     private $code;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $publishedAt;
 
@@ -41,7 +41,7 @@ class CardCollection
     private $svg;
 
     /**
-     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="collection")
+     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="collection",cascade={"persist"})
      */
     private $Card;
 

@@ -19,16 +19,5 @@ class CartesApiController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
 
     }
 
-    /**
-     * @return Response
-     * @Route("test")
-     */
-    public function test()
-    {
 
-
-        $res = $this->scryfallService->getAllCards();
-        dump($res);
-        return new Response('<body>toto</body>');
-    }
 }

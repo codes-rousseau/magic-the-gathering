@@ -48,9 +48,14 @@ class Card
     private $artist;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CardCollection::class, inversedBy="Card")
+     * @ORM\ManyToOne(targetEntity=CardCollection::class, inversedBy="Card", cascade={"persist"})
      */
     private $collection;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $target;
 
     public function getId(): ?int
     {
@@ -137,6 +142,18 @@ class Card
     public function setCollection(?CardCollection $collection): self
     {
         $this->collection = $collection;
+
+        return $this;
+    }
+
+    public function getTarget(): ?string
+    {
+        return $this->target;
+    }
+
+    public function setTarget(string $target): self
+    {
+        $this->target = $target;
 
         return $this;
     }
