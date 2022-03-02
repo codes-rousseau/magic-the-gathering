@@ -23,4 +23,10 @@ class CardService
             'collection' => $id
         ]);
     }
+
+
+    public function getCardsNameByCollection($id)
+    {
+
+    }
 }

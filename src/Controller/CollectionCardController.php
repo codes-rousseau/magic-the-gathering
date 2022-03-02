@@ -18,7 +18,7 @@ class CollectionCardController extends \Symfony\Bundle\FrameworkBundle\Controlle
 
     /**
      * @return Response
-     * @Route("collections")
+     * @Route("collections", name="collections.all")
      */
     public function getCollections()
     {

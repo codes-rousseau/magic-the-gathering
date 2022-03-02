@@ -3,7 +3,26 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+
+
+        {% block javascriptstop %}
+{#            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>#}
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{#            <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>#}
+            <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/fixedheader/3.2.2/js/dataTables.fixedHeader.min.js"></script>
+
+
+            <script src="{{ asset('js/bootstrap-table-filter-control.js') }}"></script>
+
+            <script src="{{ asset('js/card.js') }}"></script>
+
+        {% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+                  integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+        {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}

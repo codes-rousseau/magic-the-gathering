@@ -1,16 +1,63 @@
 {% extends 'base.html.twig' %}
 
+
+
+{% block javascrpitstop %}
+    {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+
 {% block body %}
     <h1>Cartes</h1>
 
+    <div>
+        <a href="{{ path('collections.all' ) }}">Collections</a>
+    </div>
 
-    {% for card in cards %}
+    <div>
+        <table class="table table-bordered" cellspacing="0" width="100%" id="cardListTable"
+               data-filter-control="true"
+               data-search="true"
+               data-pagination="true"
+               data-page-size="100">
 
-        <p><b>Nom</b> :{{ card.name }} <b>Type</b> :{{ card.type }}, <b>Couleur</b> :{{ card.color }}, <b>Artiste</b> : {{ card.artist }}
-            <br><b>Description</b> : {{ card.description }}</p>
-        <p><img src="{{ asset( card.target) }}" alt="{{ card.name }} "></p>
+            <thead>
+            <tr class="filters">
 
-    {% endfor %}
+                <th data-sortable="true" data-filters="true" data-filter-control="input" data-field="name" >Nom</th>
+                <th data-sortable="true" data-filters="true" data-filter-control="input" data-field="color">Couleur</th>
+                <th data-sortable="true" data-filters="true" data-filter-control="input" data-field="artist">Artiste</th>
+                <th data-sortable="true" >Descripition</th>
+                <th data-sortable="true" >Image</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for card in cards %}
+
+                <tr>
+                    <td>{{ card.name }}</td>
+                    <td>{{ card.color }}</td>
+                    <td>{{ card.artist }}</td>
+                    <td>{{ card.description }}</td>
+                    <td><p><img src="{{ asset( card.target) }}" alt="{{ card.name }} " height=100 width=100></p></td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+
+
+        </table>
+    </div>
+
+
 
 
 
