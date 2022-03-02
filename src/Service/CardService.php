@@ -25,8 +25,5 @@ class CardService
     }
 
 
-    public function getCardsNameByCollection($id)
-    {
 
-    }
 }

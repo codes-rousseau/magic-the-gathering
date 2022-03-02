@@ -74,7 +74,7 @@ class ScryfallService
 
         $curl = curl_init();
 
-        echo 'https://api.scryfall.com/cards/search?q=set:'.$collection."\n";
+        //echo 'https://api.scryfall.com/cards/search?q=set:'.$collection."\n";
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.scryfall.com/cards/search?q=set:'.$collection,
