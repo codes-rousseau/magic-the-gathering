@@ -62,7 +62,7 @@ class ScryfallApiService implements MagicApiServiceInterface
             $card->setName($c['name']);
             $card->setArtist($c['artist']);
             $card->setType($c['type_line']);
-            if (array_key_exists('flacor_text', $c)) {
+            if (array_key_exists('flavor_text', $c)) {
                 $card->setDescription($c['flavor_text']);
             }
             $card->setImage($c['id'] . '.png');
