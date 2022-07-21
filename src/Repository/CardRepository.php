@@ -61,26 +61,25 @@ class CardRepository extends ServiceEntityRepository
             ->where($expr->eq('card.set', ':setId'))
             ->setParameter('setId', $criteria['set']);
 
-            if (array_key_exists('name', $criteria)) {
-                $query
-                    ->andWhere($expr->like('card.name', ':name'))
-                    ->setParameter('name', '%'.$criteria['name'].'%');
+        if (array_key_exists('name', $criteria)) {
+            $query
+                ->andWhere($expr->like('card.name', ':name'))
+                ->setParameter('name', '%' . $criteria['name'] . '%');
+        }
+        if (array_key_exists('type', $criteria)) {
+            $query
+                ->andWhere($expr->like('card.type', ':type'))
+                ->setParameter('type', '%' . $criteria['type'] . '%');
+        }
+        if (array_key_exists('colors', $criteria) && count($criteria['colors']) > 0) {
+            $orWhere = [];
+            foreach ($criteria['colors']->toArray() as $i => $color) {
+                $orWhere[] = $expr->eq('color.abbr', ':abbr' . $i);
+                $query->setParameter(':abbr' . $i, $color->getAbbr());
             }
-            if (array_key_exists('type', $criteria)) {
-                $query
-                    ->andWhere($expr->like('card.type', ':type'))
-                    ->setParameter('type', '%'.$criteria['type'].'%');
-            }
-            if (array_key_exists('colors', $criteria) && count($criteria['colors']) > 0) {    
-                $orWhere = [];
-                foreach ($criteria['colors']->toArray() as $i => $color) {
-                    $orWhere[] = $expr->eq('color.abbr', ':abbr' . $i);
-                    $query->setParameter(':abbr' . $i, $color->getAbbr());
-                }
-                $query->andWhere($expr->orX(...$orWhere));
-            }
-    
-            return $query->getQuery()->getResult();
-    }
+            $query->andWhere($expr->orX(...$orWhere));
+        }
 
+        return $query->getQuery()->getResult();
+    }
 }

@@ -26,7 +26,7 @@ class SetController extends AbstractController
 
     /**
      * Affichage des cartes d'une collection.
-     * @Route(name="set_show", path="/show/{id}")
+     * @Route(name="set_show", path="/set/{id}")
      */
     public function show(
         CardRepository $cardRepository,
