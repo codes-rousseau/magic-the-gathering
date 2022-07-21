@@ -21,6 +21,11 @@ Cette étape est facultative si vous souhaitez utiliser votre propre base de don
 docker-compose up -d
 ```
 
+Exécuter composer :
+```bash
+composer install
+```
+
 Lancer le serveur Symfony :
 ```bash
 symfony serve

@@ -9,8 +9,8 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-/public/cards/
-/public/sets/
+/public/cards/*.png
+/public/sets/*.svg
 /mysql/
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
