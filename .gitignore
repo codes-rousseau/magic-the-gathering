@@ -11,6 +11,7 @@
 
 /public/cards/
 /public/sets/
+/mysql/
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
