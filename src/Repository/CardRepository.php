@@ -48,31 +48,38 @@ class CardRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Card[] Returns an array of Card objects
+    //  * @return Card[]
     //  */
-    /*
-    public function findByExampleField($value)
+    public function applyFilter(array $criteria)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $expr = $this->_em->getExpressionBuilder();
 
-    /*
-    public function findOneBySomeField($value): ?Card
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $this->createQueryBuilder('card')
+            ->addSelect('color')
+            ->leftJoin('card.colors', 'color')
+            ->where($expr->eq('card.set', ':setId'))
+            ->setParameter('setId', $criteria['set']);
+
+            if (array_key_exists('name', $criteria)) {
+                $query
+                    ->andWhere($expr->like('card.name', ':name'))
+                    ->setParameter('name', '%'.$criteria['name'].'%');
+            }
+            if (array_key_exists('type', $criteria)) {
+                $query
+                    ->andWhere($expr->like('card.type', ':type'))
+                    ->setParameter('type', '%'.$criteria['type'].'%');
+            }
+            if (array_key_exists('colors', $criteria) && count($criteria['colors']) > 0) {    
+                $orWhere = [];
+                foreach ($criteria['colors']->toArray() as $i => $color) {
+                    $orWhere[] = $expr->eq('color.abbr', ':abbr' . $i);
+                    $query->setParameter(':abbr' . $i, $color->getAbbr());
+                }
+                $query->andWhere($expr->orX(...$orWhere));
+            }
+    
+            return $query->getQuery()->getResult();
     }
-    */
+
 }
