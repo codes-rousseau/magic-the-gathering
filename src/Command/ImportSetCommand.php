@@ -93,7 +93,7 @@ class ImportSetCommand extends Command
         $this->io->writeln('Collection ' . $setCreated->getName() . ' créée.');
 
         $cards = $this->magicApiService->getCardsBySet($setCreated);
-        $this->io->writeln('Import des ' . count($cards) . ' cartes...');
+        $this->io->writeln('Import des ' . count($cards) . ' cartes de la collection...');
 
         $progressBar = new ProgressBar($output, count($cards));
         $progressBar->start();

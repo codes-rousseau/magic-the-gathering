@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SetRepository::class)
+ * @ORM\Table(name="card_set")
  */
 class Set
 {
