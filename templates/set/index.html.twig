@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des collections{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table>
+        <tr>
+            <th>Icône</th>
+            <th>Nom</th>
+            <th>Code</th>
+            <th>Date de sortie</th>
+            <th>Nombre de cartes</th>
+        </tr>
+        {% for set in sets %}
+            <tr>
+                <td>
+                    <img src="sets/{{ set.icon }}" alt="{{ set.name }}" height="80px" />
+                </td>
+                <td>{{ set.name }}</td>
+                <td>{{ set.code }}</td>
+                <td>{{ set.releasedAt | date('d/m/Y') }}</td>
+                <td>{{ set.cards|length }} cartes</td>
+                <td><a href="{{ path('set_show', {'id': set.id}) }}">Voir les cartes</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

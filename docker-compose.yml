@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  database:
+    container_name: database
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 4S2xSFm9kS
+      MYSQL_DATABASE: magic
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: 4S2xSFm9kS
+    ports:
+      - '4306:3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
+###< doctrine/doctrine-bundle ###
