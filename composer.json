@@ -14,6 +14,7 @@
         "symfony/framework-bundle": "4.4.*",
         "symfony/http-client": "4.4.*",
         "symfony/proxy-manager-bridge": "4.4.*",
+        "symfony/twig-bundle": "4.4.*",
         "symfony/yaml": "4.4.*"
     },
     "config": {
@@ -65,6 +66,7 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.31"
+        "symfony/maker-bundle": "^1.31",
+        "symfony/phpunit-bridge": "^6.1"
     }
 }

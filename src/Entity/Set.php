@@ -44,6 +44,8 @@ class Set
      */
     private $cards;
 
+    private $iconSvgURI;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
@@ -95,6 +97,11 @@ class Set
         return $this->icon;
     }
 
+    public function getIconSvgURI(): string
+    {
+        return $this->iconSvgURI;
+    }
+
     public function setIcon(string $icon): self
     {
         $this->icon = $icon;
@@ -131,4 +138,16 @@ class Set
 
         return $this;
     }
+
+    public function setIconSvgURI(string $uri): self
+    {
+        $this->iconSvgURI = $uri;
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 }

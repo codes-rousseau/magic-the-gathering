@@ -31,22 +31,22 @@ class Card
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $artist;
 
@@ -54,6 +54,8 @@ class Card
      * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="cards")
      */
     private $colors;
+
+    private $pngURI;
 
     public function __construct()
     {
@@ -157,6 +159,18 @@ class Card
     public function removeColor(Color $color): self
     {
         $this->colors->removeElement($color);
+
+        return $this;
+    }
+
+    public function getPngURI(): ?string
+    {
+        return $this->pngURI;
+    }
+
+    public function setPngURI(string $uri): self
+    {
+        $this->pngURI = $uri;
 
         return $this;
     }
