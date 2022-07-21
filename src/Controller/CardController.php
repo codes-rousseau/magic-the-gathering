@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CardController extends AbstractController
 {
     /**
+     * Affichage d'une carte.
      * @Route(name="card_show", path="/card/{id}")
      */
     public function show(CardRepository $cardRepository, int $id): Response

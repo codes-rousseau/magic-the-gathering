@@ -47,9 +47,10 @@ class CardRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Card[]
-    //  */
+    /**
+     * Applique le filtre du formulaire.
+     * @return Card[]
+     */
     public function applyFilter(array $criteria)
     {
         $expr = $this->_em->getExpressionBuilder();

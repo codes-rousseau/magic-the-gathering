@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SetController extends AbstractController
 {
     /**
+     * Affichage de la liste des collections.
      * @Route("/", name="set_list")
      */
     public function index(SetRepository $setRepository): Response
@@ -24,6 +25,7 @@ class SetController extends AbstractController
     }
 
     /**
+     * Affichage des cartes d'une collection.
      * @Route(name="set_show", path="/show/{id}")
      */
     public function show(

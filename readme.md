@@ -15,8 +15,32 @@ Une fois le développement effectué sur une branche spécifique, il faudra fair
 
 
 ## Installation
-- Cloner ce dépôt
-- Installer les dépendances avec composer
+Lancer docker en tâche de fond afin d'avoir accès à une base de données.
+Cette étape est facultative si vous souhaitez utiliser votre propre base de données (à configurer dans le .env).
+```bash
+docker-compose up -d
+```
+
+Lancer le serveur Symfony :
+```bash
+symfony serve
+```
+
+Créer la base de données et exécuter les migrations :
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+```
+
+Pour récupérer une collection, exécuter la commande :
+```bash
+php bin/console app:import-set 
+```
+
+Pour lancer les tests, exécuter la commande :
+```bash
+php bin/phpunit
+```
 
 ## Fonctionnalités à ajouter
 Actuellement ce projet Symfony ne contient que très peu de composants, il sera donc nécessaire de les ajouter en fonction du besoin de chaques fonctionnalités.
