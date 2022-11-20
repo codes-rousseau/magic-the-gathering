@@ -1,16 +1,23 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}View collection{% endblock %}
-{% block h1 %}Collection "{{ collection.name }}"{% endblock %}
+{% block title %}{{ collection_name }} - View collection{% endblock %}
+{% block h1 %}Collection "{{ collection_name }}"{% endblock %}
 
 
 {% block body %}
-    <a href="{{ path('home') }}"><< Return to home</a>
+
+    <div class="mt-3 mb-3">
+        <a href="{{ path('home') }}"><< Return to home</a>
+    </div>
+
+    <div class="search-card">
+        {{ form(search_form) }}
+    </div>
 
     <div class="d-flex justify-content-arround cards flex-wrap">
-        {% if collection.cards|length > 0 %}
-            {% for card in collection.cards %}
+        {% if cards|length > 0 %}
+            {% for card in cards %}
                 <div class="card">
                     <img src="/{{ card.image }}">
                     <div class="card-body">
@@ -40,7 +47,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            No collection
+            No card
         {% endif %}
     </div>
     <style>
@@ -69,6 +76,29 @@
         .card .desc {
             text-align: center;
             margin: 8px 0;
+        }
+
+        form {
+            margin-bottom: 30px;
+            border-bottom: 3px solid grey !important;
+            padding-bottom: 15px !important;
+        }
+
+        form .input-group {
+            column-gap: 8px;
+            flex-flow: column;
+        }
+
+        form select {
+            width: 100% !important;
+            max-height: 65px;
+        }
+        form input {
+            width: 100% !important;
+        }
+
+        form #search_cards {
+            column-gap: 30px;
         }
     </style>
 

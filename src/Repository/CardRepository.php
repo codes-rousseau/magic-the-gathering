@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Card;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,6 +46,48 @@ class CardRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public function findByForm(Card $card) {
+
+         $q = $this->createQueryBuilder('c')
+            ->andWhere('c.collection = :collection_id')
+            ->setParameter('collection_id', $card->getCollection()->getId())
+            ->orderBy('c.name', 'ASC')
+            ;
+
+
+
+         if(!is_null($card->getName())) {
+             $q->andWhere('c.name LIKE :name')
+                ->setParameter('name', '%' . $card->getName() . '%')
+             ;
+         }
+
+         if(!is_null($card->getType())) {
+            $q->andWhere('c.type = :type_id')
+                ->setParameter('type_id', $card->getType()->getId());
+         }
+
+         if(count($card->getColor()) > 0) {
+             $colors = [];
+             foreach($card->getColor() as $color) {
+                 $colors[] = $color->getId();
+             }
+
+             /*$q->andWhere('c.color IN ( :colors )')
+                 ->setParameter('colors', $colors);*/
+
+             $q->leftJoin('c.color', 'co')
+                 ->andWhere('co.id IN ( :colors )')
+                 ->setParameter('colors', $colors);
+
+
+         }
+
+         $query = $q->getQuery();
+
+        return $query->getResult();
     }
 
     // /**
