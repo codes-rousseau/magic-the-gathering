@@ -16,6 +16,13 @@ class ScryfallAPIService
         $this->client = HttpClient::create();
     }
 
+    /**
+     * @return Object
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function getCollections(): Object {
 
         $request_collection = $this->client->request(
@@ -30,6 +37,14 @@ class ScryfallAPIService
         }
     }
 
+    /**
+     * @param String $code
+     * @return Object
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function getCards(String $code): Object {
         $request_cards = $this->client->request(
             'GET',

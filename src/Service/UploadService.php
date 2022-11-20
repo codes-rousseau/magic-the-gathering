@@ -11,6 +11,12 @@ class UploadService
     private const BASE_UPLOAD_DIR = 'img';
     private const PREFIXE = 'public';
 
+    /**
+     * @param String $uri
+     * @param String $dir
+     * @param String $name
+     * @return String
+     */
     public function uploadFile(String $uri, String $dir , String $name): String {
 
         $this->createDir($dir);
@@ -22,6 +28,10 @@ class UploadService
         }
     }
 
+    /**
+     * @param String $dir
+     * @return void
+     */
     private function createDir( String $dir ) {
         $fs = new Filesystem();
 

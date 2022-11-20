@@ -21,6 +21,7 @@ use App\Repository\CardRepository;
 use App\Repository\TypeRepository;
 use App\Repository\ColorRepository;
 
+
 class ScryfallCommand extends Command
 {
     protected static $defaultName = 'scryfall';
@@ -34,6 +35,7 @@ class ScryfallCommand extends Command
     private CardRepository $cardRepository;
     private TypeRepository $typeRepository;
     private ColorRepository $colorRepository;
+
 
     public function __construct(
         string $name = null,
@@ -137,7 +139,13 @@ class ScryfallCommand extends Command
         return 0;
     }
 
-    private function createCollection($collec) {
+    /**
+     * @param Object $collec
+     * @return Collections|null
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function createCollection(Object $collec) {
 
         $collection = $this->collectionsRepository->findOneBy(['code' => $collec->code]);
 
@@ -160,13 +168,26 @@ class ScryfallCommand extends Command
         }
     }
 
-    private function createCard($c, $collection) {
+    /**
+     * @param \stdClass $c
+     * @param Collections $collection
+     * @return Card|null
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function createCard(\stdClass $c, Collections $collection) {
         $card = $this->cardRepository->findOneBy(['name' => $c->name]);
 
         if($card == null) {
             $card = new Card();
             $card->setName($c->name);
-            $card->setDescription($c->oracle_text);
+
+            if(isset($c->oracle_text)) {
+                $card->setDescription($c->oracle_text);
+            } else {
+                $card->setDescription('');
+            }
+
             $card->setArtistName($c->artist);
             $card->setType($this->createType($c->type_line));
             $card->setCollection($collection);
@@ -189,6 +210,12 @@ class ScryfallCommand extends Command
         return $card;
     }
 
+    /**
+     * @param String $type_name
+     * @return Type
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     private function createType(String $type_name): Type {
         $type = $this->typeRepository->findOneBy(['name' => $type_name]);
 
@@ -202,6 +229,12 @@ class ScryfallCommand extends Command
         return $type;
     }
 
+    /**
+     * @param String $color_name
+     * @return Color
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     private function createColor(String $color_name): Color {
         $color = $this->colorRepository->findOneBy(['name' => $color_name]);
 

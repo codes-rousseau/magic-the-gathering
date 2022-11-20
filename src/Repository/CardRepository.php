@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Card;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -48,6 +47,11 @@ class CardRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Find cards by Card object
+     * @param Card $card
+     * @return float|int|mixed|string
+     */
     public function findByForm(Card $card) {
 
          $q = $this->createQueryBuilder('c')
@@ -57,17 +61,18 @@ class CardRepository extends ServiceEntityRepository
             ;
 
 
-
          if(!is_null($card->getName())) {
              $q->andWhere('c.name LIKE :name')
                 ->setParameter('name', '%' . $card->getName() . '%')
              ;
          }
 
+
          if(!is_null($card->getType())) {
             $q->andWhere('c.type = :type_id')
                 ->setParameter('type_id', $card->getType()->getId());
          }
+
 
          if(count($card->getColor()) > 0) {
              $colors = [];
@@ -75,47 +80,13 @@ class CardRepository extends ServiceEntityRepository
                  $colors[] = $color->getId();
              }
 
-             /*$q->andWhere('c.color IN ( :colors )')
-                 ->setParameter('colors', $colors);*/
-
              $q->leftJoin('c.color', 'co')
                  ->andWhere('co.id IN ( :colors )')
                  ->setParameter('colors', $colors);
-
-
          }
 
          $query = $q->getQuery();
 
-        return $query->getResult();
+         return $query->getResult();
     }
-
-    // /**
-    //  * @return Card[] Returns an array of Card objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Card
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
