@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}View collection{% endblock %}
+{% block h1 %}Collection "{{ collection.name }}"{% endblock %}
+
+
+{% block body %}
+    <a href="{{ path('home') }}"><< Return to home</a>
+
+    <div class="d-flex justify-content-arround cards flex-wrap">
+        {% if collection.cards|length > 0 %}
+            {% for card in collection.cards %}
+                <div class="card">
+                    <img src="/{{ card.image }}">
+                    <div class="card-body">
+                        <div class="card-title">
+                            {{ card.name }}<br>
+                            <small>by {{ card.artistname }}</small>
+                        </div>
+                        <div class="card-text">
+                            <div class="desc">{{ card.description }}</div>
+
+                            Type : <strong>{{ card.type.name }}</strong><br>
+
+                            {% if card.color|length > 0 %}
+                                {% set i = 1 %}
+                                Color :
+                                {% for color in card.color %}
+                                    {{ color.name }}
+
+                                    {% if i < card.color|length %}
+                                        <span> ; </span>
+                                    {% endif %}
+                                    {% set i = i+1 %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            No collection
+        {% endif %}
+    </div>
+    <style>
+        .cards {
+            column-gap: 15px;
+            row-gap: 15px;
+        }
+        .card {
+            border:none;
+            flex-basis: calc(25% - 15px);
+        }
+        .card img{
+            width: 250px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .card .card-title{
+            font-weight: bold;
+            text-align: center;
+        }
+        .card .card-title small {
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        .card .desc {
+            text-align: center;
+            margin: 8px 0;
+        }
+    </style>
+
+
+{% endblock %}
+

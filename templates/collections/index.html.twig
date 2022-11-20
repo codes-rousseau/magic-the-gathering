@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of collections{% endblock %}
+{% block h1 %}List of collections{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-arround collections flex-wrap">
+        {% if collections|length > 0 %}
+            {% for collection in collections %}
+                <div class="card collection">
+                    <img src="{{ collection.icon }}">
+                    <div class="card-body">
+                        <div class="card-title">{{ collection.name }}</div>
+
+                        <div class="text-center">
+                            <a href="{{ path('collection', { code: collection.code }) }}" class="btn btn-primary">See cards</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            No collection
+        {% endif %}
+    </div>
+
+
+    <style>
+        .collections {
+            column-gap: 15px;
+            row-gap: 15px;
+        }
+        .collection {
+            border-radius: 0;
+        }
+        .collection img{
+            height: 130px;
+        }
+    </style>
+
+
+{% endblock %}
+
