@@ -148,7 +148,7 @@ class ScryfallCommand extends Command
             $collection->setReleasedAt(new \DateTimeImmutable($collec->released_at));
         }
 
-        $collection->setIcon($this->uploadService->uploadFile($collec->icon_svg_uri, 'collections', $collec->code));
+        $collection->setIcon($this->uploadService->uploadFile($collec->icon_svg_uri, 'collections', $collec->code. '.svg'));
 
         if(!empty($collection->getIcon())) {
             $this->collectionsRepository->add($collection, true);
@@ -177,7 +177,7 @@ class ScryfallCommand extends Command
                 }
             }
 
-            $card->setImage($this->uploadService->uploadFile($c->image_uris->png, 'cards', $c->id));
+            $card->setImage($this->uploadService->uploadFile($c->image_uris->png, 'cards', $c->id . '.png'));
 
             if(!empty($card->getImage())) {
                 $this->cardRepository->add($card);
