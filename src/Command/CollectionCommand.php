@@ -26,7 +26,6 @@ class CollectionCommand extends Command
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        // 3. Update the value of the private entityManager variable through injection
         $this->entityManager = $entityManager;
 
         parent::__construct();
@@ -34,8 +33,7 @@ class CollectionCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription(self::$defaultDescription);
+        $this->setDescription(self::$defaultDescription);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
