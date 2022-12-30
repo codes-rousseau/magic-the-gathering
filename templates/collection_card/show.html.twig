@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CollectionCard{% endblock %}
+
+{% block body %}
+    <h1>CollectionCard</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ collection_card.id }}</td>
+        </tr>
+        <tr>
+            <th>Code</th>
+            <td>{{ collection_card.code }}</td>
+        </tr>
+        <tr>
+            <th>ReleaseDate</th>
+            <td>{{ collection_card.releaseDate ? collection_card.releaseDate|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ collection_card.name }}</td>
+        </tr>
+        <tr>
+            <th>Icon</th>
+            <td>{{ collection_card.icon }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="d-flex">
+        <h1>Liste des cartes</h1>
+        <p class="offset-1">Ordonnée par :</p>
+        <select id="order">
+            <option value="name"
+                    {% if order is same as('name') %}
+            selected
+                    {% endif %}>Nom
+            </option>
+            <option value="color" {% if order is same as('color') %}
+            selected
+                    {% endif %}>Couleur
+            </option>
+            <option value="type"{% if order is same as('type') %}
+            selected
+                    {% endif %}>Type
+            </option>
+        </select>
+    </div>
+
+    {% if order is same as('name') %}
+        {% for card in collection_card.cards | sort((a,b) => a.name <=> b.name) %}
+            <h2>{{ card.name }}</h2>
+            <div class="d-flex">
+                <img width="100" src="{{ asset("cards/"~card.name~".png") }}">
+                <br>
+            </div>
+            <div>
+                <p><b>type</b> : {{ card.type }}</p>
+                <p><b>color</b> : {{ card.color }}</p>
+                <p><b>description</b> : {{ card.description }}
+                <p><b>Artist</b> : {{ card.artistName }}</p>
+            </div>
+        {% endfor %}
+    {% elseif order is same as('color') %}
+        {% for card in collection_card.cards | sort((a,b) => a.color <=> b.color) %}
+            <h2>{{ card.name }}</h2>
+            <img width="50" src="{{ asset("cards/"~card.name~".png") }}">
+
+        {% endfor %}
+    {% else %}
+        {% for card in collection_card.cards | sort((a,b) => a.type <=> b.type) %}
+            <h2>{{ card.name }}</h2>
+            <img width="50" src="{{ asset("cards/"~card.name~".png") }}">
+        {% endfor %}
+
+    {% endif %}
+    <a href="{{ path('app_collection_card_index') }}">back to list</a>
+
+    <a href="{{ path('app_collection_card_edit', {'id': collection_card.id}) }}">edit</a>
+
+    {{ include('collection_card/_delete_form.html.twig') }}
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
+    <script>
+        $("#order").on('change', () => {
+            console.log("{{ app.request.getSchemeAndHttpHost() }}{{ path("app_collection_card_show",{'id': collection_card.id}) }}" + "/" + $("#order").val())
+            location.href = "{{ app.request.getSchemeAndHttpHost() }}{{ path("app_collection_card_show",{'id': collection_card.id}) }}" + "/" + $("#order").val()
+
+        })
+
+    </script>
+{% endblock %}

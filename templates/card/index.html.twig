@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Card index{% endblock %}
+
+{% block body %}
+    <h1>Card index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Picture</th>
+                <th>Type</th>
+                <th>Color</th>
+                <th>Description</th>
+                <th>ArtistName</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for card in cards %}
+            <tr>
+                <td>{{ card.id }}</td>
+                <td>{{ card.name }}</td>
+                <td>{{ card.picture }}</td>
+                <td>{{ card.type }}</td>
+                <td>{{ card.color }}</td>
+                <td>{{ card.description }}</td>
+                <td>{{ card.artistName }}</td>
+                <td>
+                    <a href="{{ path('app_card_show', {'id': card.id}) }}">show</a>
+                    <a href="{{ path('app_card_edit', {'id': card.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_card_new') }}">Create new</a>
+{% endblock %}
