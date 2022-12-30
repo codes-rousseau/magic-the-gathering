@@ -21,7 +21,7 @@ use function Doctrine\Common\Cache\Psr6\set;
 class CollectionCommand extends Command
 {
     protected static $defaultName = 'collection';
-    protected static $defaultDescription = 'Add a short description for your command';
+    protected static $defaultDescription = 'Recherche de collection et choisissez en une dans la liste retouné via le code de la collection';
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -35,23 +35,14 @@ class CollectionCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
+            ->setDescription(self::$defaultDescription);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-        }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
         $collections = json_decode($this->CallAPI('GET', "https://api.scryfall.com/sets", false))->data;
         $io->note(sprintf(''));
         $choices = [];
@@ -92,7 +83,7 @@ class CollectionCommand extends Command
             $newCollection->addCard($newCard);
             $em->persist($newCollection);
             $em->flush();
-            dump("ajout de la carte $name a la collection ". $newCollection->getName());
+            dump("ajout de la carte $name a la collection " . $newCollection->getName());
         }
         $output->writeln($code);
         $io->success('Cartes et collection mis a jour');
