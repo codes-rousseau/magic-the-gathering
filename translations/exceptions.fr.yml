@@ -1,0 +1,4 @@
+exception:
+  provider:
+    connection: "Impossible de se connecter au fournisseur de données, merci de réessayer ultérieurement"
+    generic: "Un problème a été rencontré avec le fournissseur de données"

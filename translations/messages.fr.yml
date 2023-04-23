@@ -1,0 +1,4 @@
+command:
+  scryfall:
+    import:
+      setQuestion: "Quelle collection de cartes voulez-vous importer ?"
