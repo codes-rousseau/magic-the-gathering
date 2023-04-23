@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des collections de cartes{% endblock %}
+
+{% block body %}
+    <div class="container py-4 px-3 mx-auto">
+        <h1>Liste des collections de cartes</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Date de sortie</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for set in cardSets %}
+            <tr>
+                <th scope="row">{{ set.code }}</th>
+                <td>{{ set.name }}</td>
+                <td>{{ set.releasedAt | date('d/m/Y') }}</td>
+                <td><a class="btn btn-primary" href="{{ path('card_set_cards', {'id': set.id}) }}" role="button">Voir les cartes</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

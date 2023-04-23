@@ -60,3 +60,9 @@ Sur la page des cartes il doit être possible de filtrer les cartes :
 - soit par leur type
 
 Sur chaque carte on doit pouvoir afficher l'image, le nom, le type de carte, sa couleur, la description ainsi que le nom de l'artiste.
+
+## Commande d'import des cartes
+xxx = terme recherché
+```shell
+php bin/console app:scryfall:import xxxx
+```

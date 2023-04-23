@@ -1,0 +1,32 @@
+body {
+    background-color: lightgray;
+}
+
+.custom-text-bg-w {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.custom-text-bg-b {
+    background-color: black;
+    border: 1px solid black;
+}
+
+.custom-text-bg-u {
+    background-color: blue;
+    border: 1px solid black;
+}
+
+.custom-text-bg-r {
+    background-color: red;
+    border: 1px solid black;
+}
+
+.custom-text-bg-g {
+    background-color: green;
+    border: 1px solid black;
+}
+
+.custom-text-bg-u {
+
+}
