@@ -8,6 +8,7 @@ use App\Entity\Color;
 use App\Service\Provider\CardProviderInterface;
 use App\Dto\SetDto;
 use App\Dto\CardDto;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -77,6 +78,56 @@ class CardService implements CardServiceInterface {
             }
         }
         $this->em->flush();
+    }
+
+    /**
+     * Récupération de toutes les collections
+     * @inheritDoc
+     */
+    public function getAllCardSets():array
+    {
+        return $this->em->getRepository(CardSet::class)->findAll();
+    }
+
+    /**
+     * Récupération des cartes d'une collection
+     * Possibilité de filtrer par nom, type et couleur
+     * @inheritDoc
+     */
+    public function getAllCards(CardSet $set, ?array $filters): array
+    {
+        $criterias = [];
+        $criterias['set'] = $set;
+        if($filters['name']??false) {
+            $criterias['name'] = $filters['name'];
+        }
+        if($filters['type']??false) {
+            $criterias['type'] = $filters['type'];
+        }
+        if($filters['color']??false) {
+            $criterias['color'] = $filters['color'];
+        }
+        return $this->em->getRepository(Card::class)->getAllCards($criterias);
+    }
+
+    /**
+     * Récupération de toutes les couleurs disponibles
+     * @inheritDoc
+     */
+    public function getColors(): array {
+        return $this->em->getRepository(Color::class)->findAll();
+    }
+
+    /**
+     * Récupération de tous les types de carte possible pour une collection spécifiée
+     * @inheritDoc
+     */
+    public function getTypesForSet(CardSet $set): array {
+        $types = $this->em->getRepository(Card::class)->getTypesForSet($set);
+        return array_reduce($types, function($carry, $item) {
+            $carry[$item['id']] = $item['name'];
+            return $carry;
+        }, []);
     }
 
     /**

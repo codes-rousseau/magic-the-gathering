@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block title %}Cartes de la collection {{ set.name }}{% endblock %}
+{% block body %}
+    <div class="container py-4 px-3 mx-auto">
+        <a class="btn btn-primary" href="{{ path('card_set_index') }}" role="button">Retour à la liste des collections</a>
+        <h1 class="mb-5">Cartes de la collection {{ set.name }}</h1>
+        {{ form(formFilter) }}
+        {% if cards|length > 0 %}
+            <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3 mt-5">
+            {% for card in cards %}
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{ card.image }}" class="card-img-top" alt="{{ card.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ card.name }}</h5>
+                            <p class="card-text">{{ card.description}}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">{{ card.type.name }}</li>
+                            <li class="list-group-item">{{ card.artist }}</li>
+                            {% if card.colors|length %}
+                            <li class="list-group-item">
+                                {% for color in card.colors %}
+                                    <span class="badge rounded-pill custom-text-bg-{{ color.code|lower }}">&nbsp;</span>
+                                {% endfor %}
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+            {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                Aucune carte dans cette collection
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Card;
 use App\Entity\CardSet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,6 +23,49 @@ class CardRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Card::class);
+    }
+
+    /**
+     * Récupére les différents types de carte dans la collection spécifiée
+     * @param CardSet $set
+     * @return mixed[]
+     */
+    public function getTypesForSet(CardSet $set) {
+        $qb = $this->createQueryBuilder('c')
+            ->join("c.type", "t")
+            ->select("t.id, t.name")
+            ->distinct()
+            ->andWhere("c.set = :set")
+            ->setParameter('set', $set);
+        return $qb->getQuery()->getScalarResult();
+    }
+
+    /**
+     *
+     * @param $criteria
+     * @return Collection[Card]
+     */
+    public function getAllCards($criteria) {
+        $qb = $this->createQueryBuilder('c');
+        if($criteria['type']??false) {
+            $qb->join("c.type", "t");
+            $qb->andWhere('t.id = :type')
+                ->setParameter('type', $criteria['type']);
+        }
+        if($criteria['name']??false) {
+            $qb->andWhere('c.name like :name')
+                ->setParameter('name', '%'.$criteria['name'].'%');
+        }
+        if($criteria['color']??false) {
+            $qb->join('c.colors', 'cl')
+                ->andWhere('cl.id = :id')
+                ->setParameter('id', $criteria['color']);
+        }
+        if($criteria['set']??false) {
+            $qb->andWhere("c.set = :set")
+                ->setParameter('set', $criteria['set']);
+        }
+        return $qb->getQuery()->getResult();
     }
 
     /**
